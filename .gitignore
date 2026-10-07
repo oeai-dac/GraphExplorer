@@ -1,0 +1,18 @@
+node_modules/
+dist/
+.DS_Store
+
+# Output of "npm run build:standalone" -- a build result, not source code
+GraphExplorer-standalone.html
+
+# Large example data for the tests (see tests/fixtures/README.md)
+tests/fixtures/example-graph.json
+tests/fixtures/example-rdf.trig
+
+# Intermediate output of the test scripts
+tests/fixtures/out_*
+
+# Editor/OS
+Thumbs.db
+.vscode/
+*.log

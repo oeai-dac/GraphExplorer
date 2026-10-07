@@ -1,0 +1,10 @@
+# Zeilenenden: im Repository einheitlich LF, beim Auschecken je nach System.
+# Batch-Dateien immer mit CRLF -- cmd.exe verarbeitet sie sonst nicht zuverlässig.
+* text=auto
+*.bat text eol=crlf
+
+# Nicht in die Release-Downloads ("Source code" zip/tar.gz auf GitHub).
+# Bleibt im Repository erhalten und versioniert.
+tests/          export-ignore
+.gitignore      export-ignore
+.gitattributes  export-ignore

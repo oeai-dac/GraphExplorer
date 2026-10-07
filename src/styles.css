@@ -1,0 +1,478 @@
+/* Restyled to match OntoCartographer Studio's IBM Plex light theme
+   (frontend/src/index.css). Class names/layout are unchanged from the
+   original port -- only design tokens (colors, radius, fonts) and a few
+   literal colors that don't route through a var() were remapped. */
+
+:root {
+  --bg: #f4f8f9; --bg2: #ffffff; --bg3: #f9fbfb; --bg4: #eef5f4;
+  --bd: #d2dfe2; --bd2: #d2dfe2;
+  --tx: #1e2d33; --tx2: #4a5e66; --tx3: #8a9ea6;
+  --gold: #1f8da6; --gold2: #167a91;
+  --green: #32A88B; --orange: #d48c1a; --red: #c94052; --purple: #a8326a;
+  --r: 6px; --r2: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { height: 100%; }
+body {
+  background: var(--bg); color: var(--tx);
+  font-family: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  font-size: 14px; line-height: 1.6;
+}
+button { font-family: inherit; cursor: pointer; }
+input, select { font-family: inherit; }
+
+/* -- Landing -- */
+#landing {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(ellipse 70% 50% at 50% 20%, rgba(31,141,166,.07) 0%, transparent 70%);
+}
+.land-box { text-align: center; max-width: 520px; padding: 2rem; }
+.land-icon { font-size: 3.5rem; color: var(--gold); margin-bottom: 1.5rem; animation: glow 3s ease-in-out infinite; }
+@keyframes glow { 0%, 100% { text-shadow: 0 0 20px rgba(31,141,166,.3); } 50% { text-shadow: 0 0 40px rgba(31,141,166,.6); } }
+.land-box h1 { font-family: 'IBM Plex Sans', sans-serif; font-size: 3.4rem; font-weight: 600; line-height: 1.05; margin-bottom: .4rem; }
+.land-box h1 span { color: var(--gold); font-weight: 400; display: block; font-size: 2.2rem; }
+.land-sub { color: var(--tx2); font-size: .88rem; margin-bottom: 2rem; letter-spacing: .04em; }
+.dropzone { border: 1px dashed var(--bd2); border-radius: var(--r2); padding: 2.5rem 2rem; cursor: pointer; transition: all .2s; background: var(--bg2); }
+.dropzone:hover, .dropzone.drag { border-color: var(--gold); background: var(--bg3); box-shadow: 0 0 30px rgba(31,141,166,.08); }
+.drop-ico { font-size: 2.2rem; margin-bottom: .6rem; }
+.dropzone p { font-size: 1rem; font-weight: 500; margin-bottom: .2rem; }
+.dropzone small { color: var(--tx3); font-size: .82rem; }
+.land-hint { color: var(--tx3); font-size: .72rem; margin-top: 1.5rem; letter-spacing: .06em; text-transform: uppercase; }
+.err { color: var(--red); font-size: .82rem; margin-top: .75rem; min-height: 1.2em; }
+.load-info { color: var(--gold); font-size: .82rem; margin-top: .75rem; }
+
+/* -- App shell -- */
+#app { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.hdr { display: flex; align-items: center; gap: 1.2rem; padding: .65rem 1.4rem; background: var(--bg2); border-bottom: 1px solid var(--bd); flex-shrink: 0; }
+.hdr-logo { font-size: 1.4rem; color: var(--gold); }
+.hdr-title { flex: 1; min-width: 0; }
+.hdr-title h1 { font-family: 'IBM Plex Sans', sans-serif; font-size: 1.25rem; font-weight: 600; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hdr-title p { font-size: .7rem; color: var(--tx3); letter-spacing: .04em; }
+.reset-btn { background: none; border: 1px solid var(--bd); color: var(--tx3); padding: .28rem .75rem; border-radius: var(--r); font-size: .78rem; transition: all .15s; white-space: nowrap; flex-shrink: 0; }
+.reset-btn:hover { border-color: var(--red); color: var(--red); }
+
+/* -- Tabs -- */
+.tabs { display: flex; background: var(--bg2); border-bottom: 1px solid var(--bd); padding: 0 1rem; flex-shrink: 0; overflow-x: auto; }
+.tab { display: flex; align-items: center; gap: .35rem; background: none; border: none; border-bottom: 2px solid transparent; color: var(--tx3); padding: .65rem .75rem; font-size: .82rem; transition: all .15s; margin-bottom: -1px; white-space: nowrap; }
+.tab:hover { color: var(--tx); }
+.tab.on { color: var(--gold); border-bottom-color: var(--gold); }
+.tab-cnt { font-family: 'IBM Plex Mono', monospace; font-size: .6rem; background: var(--bg4); border: 1px solid var(--bd2); color: var(--tx3); padding: 0 .35rem; border-radius: 100px; margin-left: .2rem; }
+.tab.on .tab-cnt { background: rgba(31,141,166,.15); border-color: rgba(31,141,166,.3); color: var(--gold); }
+
+/* -- Content -- */
+.content { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+.panel { display: none; flex-direction: column; height: 100%; overflow: hidden; padding: 1.2rem 1.4rem 0; }
+.panel.on { display: flex; }
+.sec-hdr { display: flex; align-items: baseline; gap: .7rem; margin-bottom: .9rem; flex-shrink: 0; flex-wrap: wrap; }
+.sec-hdr h2 { font-family: 'IBM Plex Sans', sans-serif; font-size: 1.55rem; font-weight: 600; }
+.badge { background: var(--bg4); border: 1px solid var(--bd2); color: var(--tx2); font-size: .68rem; padding: .18rem .55rem; border-radius: 100px; font-family: 'IBM Plex Mono', monospace; letter-spacing: .04em; }
+
+.tag { display: inline-block; border: 1px solid; font-size: .66rem; padding: .1rem .45rem; border-radius: var(--r); font-family: 'IBM Plex Mono', monospace; white-space: nowrap; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* -- Editable color swatch: per node type (Overview > Node Types) and per
+      single node (Explorer > Detailansicht) -- */
+.dot-edit-wrap { display: inline-flex; align-items: center; gap: 3px; flex-shrink: 0; align-self: center; }
+/* Captioned variant, for the one place a swatch stands alone. */
+.dot-edit-chip { display: inline-flex; align-items: center; gap: .3rem; cursor: pointer;
+  border: 1px solid var(--bd2); border-radius: var(--r); padding: .2rem .5rem;
+  font-size: .68rem; color: var(--tx2); font-family: 'IBM Plex Mono', monospace; transition: all .15s; }
+.dot-edit-chip:hover { border-color: var(--gold); color: var(--gold); }
+.dot-edit {
+  -webkit-appearance: none; appearance: none;
+  width: 12px; height: 12px; padding: 0; border: none; border-radius: 50%;
+  cursor: pointer; flex-shrink: 0; background: none;
+}
+.dot-edit::-webkit-color-swatch-wrapper { padding: 0; }
+.dot-edit::-webkit-color-swatch { border: 1px solid rgba(0,0,0,.15); border-radius: 50%; }
+.dot-edit::-moz-color-swatch { border: 1px solid rgba(0,0,0,.15); border-radius: 50%; }
+.dot-edit-reset { background: none; border: none; color: var(--tx3); font-size: .8rem; line-height: 1; padding: 0 2px; cursor: pointer; }
+.dot-edit-reset:hover { color: var(--gold); }
+
+/* -- Filters -- */
+.frow { display: flex; gap: .6rem; margin-bottom: .9rem; flex-shrink: 0; flex-wrap: wrap; }
+.si { flex: 1; min-width: 180px; background: var(--bg3); border: 1px solid var(--bd2); color: var(--tx); padding: .48rem .8rem; border-radius: var(--r); font-size: .86rem; transition: border-color .15s; }
+.si:focus { outline: none; border-color: var(--gold); }
+.sl { background: var(--bg3); border: 1px solid var(--bd2); color: var(--tx2); padding: .48rem .7rem; border-radius: var(--r); font-size: .84rem; cursor: pointer; }
+.sl:focus { outline: none; border-color: var(--gold); }
+
+/* -- List + Detail -- */
+.ld { display: grid; grid-template-columns: 350px 1fr; gap: .9rem; flex: 1; overflow: hidden; }
+/* Left column = the control that narrows the list, then the list itself. The
+   min-height:0 is what keeps the list (not the column) the scrolling part. */
+.ld-list { display: flex; flex-direction: column; gap: .4rem; min-height: 0; overflow: hidden; }
+.ld-typesel { width: 100%; flex-shrink: 0; }
+.ld-list .lst { flex: 1; min-height: 0; }
+.lst { overflow-y: auto; border: 1px solid var(--bd); border-radius: var(--r); background: var(--bg2); }
+.li { padding: .55rem .8rem; border-bottom: 1px solid var(--bd); cursor: pointer; transition: background .1s; }
+.li:last-child { border-bottom: none; }
+.li:hover { background: var(--bg3); }
+.li.on { background: rgba(31,141,166,.07); border-left: 2px solid var(--gold); }
+.li-top { display: flex; justify-content: space-between; align-items: center; gap: .4rem; margin-bottom: .2rem; }
+.li-top strong { font-family: 'IBM Plex Mono', monospace; font-size: .8rem; color: var(--tx); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.li-meta { display: flex; gap: .3rem; flex-wrap: wrap; align-items: center; }
+.li-sub { font-size: .7rem; color: var(--tx3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; margin-top: .15rem; }
+
+.det { overflow-y: auto; border: 1px solid var(--bd); border-radius: var(--r); background: var(--bg2); }
+.det-empty { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--tx3); font-size: .86rem; }
+.det-inner { padding: 1.2rem; }
+.det-hdr { display: flex; align-items: baseline; gap: .7rem; margin-bottom: 1.1rem; padding-bottom: .7rem; border-bottom: 1px solid var(--bd); flex-wrap: wrap; }
+.det-hdr h3 { font-family: 'IBM Plex Sans', sans-serif; font-size: 1.35rem; font-weight: 600; }
+dl.dl { display: grid; grid-template-columns: auto 1fr; gap: .22rem .9rem; margin-bottom: .8rem; }
+dl.dl dt { color: var(--tx3); font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; padding-top: .1rem; white-space: nowrap; }
+dl.dl dd { color: var(--tx); font-family: 'IBM Plex Mono', monospace; font-size: .8rem; word-break: break-word; }
+.sub { margin-top: 1.1rem; padding-top: .9rem; border-top: 1px solid var(--bd); }
+.sub h4 { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--tx3); margin-bottom: .6rem; display: flex; align-items: center; gap: .6rem; }
+
+/* -- Neighbors -- */
+.nb-group { margin-bottom: .9rem; }
+.nb-hdr { display: flex; align-items: center; gap: .4rem; margin-bottom: .4rem; cursor: pointer; user-select: none; }
+.nb-hdr:hover .nb-label { color: var(--tx); }
+.nb-arrow { font-size: .6rem; color: var(--tx3); transition: transform .15s; display: inline-block; }
+.nb-arrow.open { transform: rotate(90deg); }
+.nb-label { font-size: .72rem; color: var(--tx2); text-transform: uppercase; letter-spacing: .06em; font-weight: 500; }
+.nb-cnt { font-family: 'IBM Plex Mono', monospace; font-size: .62rem; color: var(--tx3); }
+.nb-dir { font-size: .6rem; padding: .05rem .35rem; border-radius: var(--r); font-family: 'IBM Plex Mono', monospace; border: 1px solid var(--bd2); color: var(--tx3); }
+.nb-list { display: flex; flex-direction: column; gap: 2px; }
+.nb-item { display: flex; align-items: center; gap: .5rem; padding: .3rem .6rem; border-radius: var(--r); cursor: pointer; transition: background .1s; font-size: .78rem; }
+.nb-item:hover { background: var(--bg4); }
+.nb-item-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: .1rem; }
+.nb-item-label { color: var(--tx); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+/* What the neighbour holds (see lib/subline.js) -- a dependent node's label is
+   often just its id, its content sits in the attributes. */
+.nb-item-sub { font-size: .68rem; color: var(--tx3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.nb-item-id { font-family: 'IBM Plex Mono', monospace; color: var(--tx2); font-size: .7rem; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* A neighbour that is an image (its target-node id / attr is an image URL) is
+   shown as an inline thumbnail instead of a plain node row. */
+.nb-item-img { cursor: default; }
+.nb-item-img:hover { background: transparent; }
+.nb-img-link { display: inline-block; line-height: 0; }
+.nb-img { display: block; max-width: 100%; max-height: 200px; width: auto; height: auto;
+  object-fit: contain; border: 1px solid var(--bd); border-radius: var(--r); background: var(--bg3);
+  transition: box-shadow .15s, border-color .15s; }
+.nb-img-link:hover .nb-img { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(31,141,166,.12); }
+.nb-more { padding: .3rem .6rem; font-size: .7rem; color: var(--tx3); cursor: pointer; text-align: center; }
+.nb-more:hover { color: var(--gold); }
+
+/* -- Breadcrumb trail -- */
+.trail { display: flex; align-items: center; gap: .3rem; margin-bottom: .9rem; flex-shrink: 0; flex-wrap: wrap; min-height: 28px; }
+.trail-back { display: flex; align-items: center; gap: .25rem; background: var(--bg4); border: 1px solid var(--bd2); color: var(--tx2); padding: .2rem .6rem; border-radius: var(--r); font-size: .74rem; cursor: pointer; transition: all .15s; flex-shrink: 0; font-family: 'IBM Plex Mono', monospace; }
+.trail-back:hover { border-color: var(--gold); color: var(--gold); }
+.trail-back.disabled { opacity: .25; cursor: not-allowed; pointer-events: none; }
+.trail-item { display: flex; align-items: center; gap: .3rem; background: var(--bg3); border: 1px solid var(--bd); padding: .15rem .55rem; border-radius: var(--r); font-size: .72rem; cursor: pointer; transition: all .15s; color: var(--tx2); }
+.trail-item:hover { border-color: var(--gold); color: var(--gold); }
+.trail-item.current { border-color: var(--gold); color: var(--gold); }
+.trail-sep { color: var(--tx3); font-size: .7rem; }
+.trail-label { font-family: 'IBM Plex Mono', monospace; }
+
+/* -- Overview -- */
+/* Class rather than #tab-overview: the Dashboard mounts a second copy of this
+   view that carries no element id (see the domId prop). */
+.panel-overview { overflow-y: auto; padding-bottom: 2rem; }
+.stgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: .7rem; margin-bottom: 1.3rem; }
+.stcard { background: var(--bg3); border: 1px solid var(--bd); border-radius: var(--r2); padding: 1rem; text-align: center; transition: border-color .2s; }
+.stcard:hover { border-color: var(--gold); }
+.stcard.clickable { cursor: pointer; }
+.stcard.clickable:hover { border-color: var(--gold); background: var(--bg4); }
+.stcard-val { font-family: 'IBM Plex Sans', sans-serif; font-size: 1.9rem; font-weight: 700; color: var(--tx); line-height: 1; margin-bottom: .25rem; }
+.stcard-lbl { font-size: .68rem; color: var(--tx3); text-transform: uppercase; letter-spacing: .06em; }
+.ovgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: .9rem; }
+.infocard { background: var(--bg3); border: 1px solid var(--bd); border-radius: var(--r2); padding: 1rem; }
+.infocard h3 { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--tx3); margin-bottom: .9rem; }
+.blist { display: flex; flex-direction: column; gap: .45rem; }
+.brow { display: grid; grid-template-columns: 1fr 80px auto; gap: .45rem; align-items: center; font-size: .78rem; }
+.brow.clickable { cursor: pointer; border-radius: var(--r); padding: .15rem .3rem; margin: -.15rem -.3rem; }
+.brow.clickable:hover { background: var(--bg4); }
+.blbl { display: flex; align-items: center; gap: .4rem; color: var(--tx2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.btrk { height: 4px; background: var(--bd2); border-radius: 2px; overflow: hidden; }
+.bfill { height: 100%; border-radius: 2px; transition: width .5s ease; }
+.bcnt { color: var(--tx3); font-family: 'IBM Plex Mono', monospace; font-size: .68rem; text-align: right; }
+
+/* -- Search -- */
+.sr-group { padding: .45rem .8rem; background: var(--bg3); border-bottom: 1px solid var(--bd); font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--tx3); display: flex; align-items: center; gap: .4rem; position: sticky; top: 0; z-index: 1; }
+
+/* -- Misc -- */
+.pag { display: flex; align-items: center; justify-content: center; gap: .7rem; padding: .65rem; border-top: 1px solid var(--bd); font-size: .78rem; color: var(--tx2); flex-shrink: 0; }
+.pag button { background: var(--bg4); border: 1px solid var(--bd2); color: var(--tx); width: 26px; height: 26px; border-radius: var(--r); font-size: .95rem; transition: all .1s; }
+.pag button:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+.pag button:disabled { opacity: .3; cursor: not-allowed; }
+.empty { padding: 2rem; text-align: center; color: var(--tx3); font-size: .86rem; }
+.det-quote { background: var(--bg3); border-left: 2px solid var(--gold); padding: .65rem .9rem; border-radius: 0 var(--r) var(--r) 0; margin: .6rem 0; font-size: .84rem; line-height: 1.75; color: var(--tx); }
+.det-quote-label { font-size: .65rem; text-transform: uppercase; letter-spacing: .08em; color: var(--tx3); margin-bottom: .3rem; }
+.copy-btn { background: var(--bg4); border: 1px solid var(--bd2); color: var(--tx2); padding: .25rem .6rem; border-radius: var(--r); font-size: .68rem; cursor: pointer; transition: all .15s; font-family: 'IBM Plex Mono', monospace; display: inline-flex; align-items: center; gap: .25rem; }
+.copy-btn:hover { border-color: var(--gold); color: var(--gold); }
+.copy-btn.copied { border-color: var(--green); color: var(--green); }
+.copy-btn:disabled { opacity: .35; cursor: not-allowed; }
+.copy-btn:disabled:hover { border-color: var(--bd2); color: var(--tx2); }
+.dd-link { color: var(--gold); text-decoration: none; border-bottom: 1px dashed rgba(31,141,166,.4); cursor: pointer; transition: border-color .15s; }
+.dd-link:hover { border-bottom-color: var(--gold); }
+
+/* Inline image preview for attribute values that are image URLs. Clicking the
+   thumbnail opens the full image in a new tab. */
+.dd-img-link { display: inline-block; margin: .2rem 0; line-height: 0; }
+.dd-img { display: block; max-width: 100%; max-height: 240px; width: auto; height: auto;
+  object-fit: contain; border: 1px solid var(--bd); border-radius: var(--r); background: var(--bg3);
+  transition: box-shadow .15s, border-color .15s; }
+.dd-img-link:hover .dd-img { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(31,141,166,.12); }
+.act-row { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: .6rem; }
+.act-btn { background: var(--bg4); border: 1px solid var(--bd2); color: var(--gold); padding: .3rem .75rem; border-radius: var(--r); font-size: .74rem; font-family: 'IBM Plex Mono', monospace; cursor: pointer; transition: all .15s; display: inline-flex; align-items: center; gap: .3rem; text-decoration: none; }
+.act-btn:hover { background: var(--gold); color: var(--bg); border-color: var(--gold); }
+
+/* ── Timeline / Zeitstrahl tab ──────────────────────────────────────────── */
+.tl-legend { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin-bottom: .7rem; flex-shrink: 0; }
+.tl-leg-item { display: inline-flex; align-items: center; gap: .35rem; font-size: .7rem; color: var(--tx2); cursor: pointer; transition: opacity .12s; user-select: none; }
+.tl-leg-dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+/* -- Harris-Matrix: Farblegende der eingefaerbten Kategorien --
+   Kann lang werden (bis zu einer Palettenlaenge an Werten), deshalb eigene
+   Hoehenbegrenzung statt der einzeiligen Zeitstrahl-Legende. */
+.mx-legend { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .9rem;
+  margin-bottom: .6rem; flex-shrink: 0; max-height: 4.6rem; overflow-y: auto; }
+.mx-leg-lbl { font-size: .68rem; color: var(--tx3); text-transform: uppercase; letter-spacing: .05em; flex-shrink: 0; }
+.mx-leg-item { display: inline-flex; align-items: center; gap: .35rem; font-size: .7rem; color: var(--tx2); cursor: pointer; user-select: none; }
+.mx-leg-item:hover { color: var(--gold); }
+.mx-leg-item.plain { cursor: default; }
+.mx-leg-item.plain:hover { color: var(--tx2); }
+.mx-leg-item em, .tl-leg-cnt { font-style: normal; color: var(--tx3); font-family: 'IBM Plex Mono', monospace; font-size: .66rem; }
+/* Hinweis unter einer Farblegende (Matrix und Zeitstrahl) -- steht bewusst
+   AUSSERHALB der scrollbaren Legende, sonst kann er aus dem Blick rutschen. */
+.cat-note { font-size: .68rem; color: var(--tx3); font-style: italic; margin: -.3rem 0 .5rem; flex-shrink: 0; }
+.tl-wrap { flex: 1; overflow: auto; border: 1px solid var(--bd); border-radius: var(--r); background: var(--bg2); position: relative; }
+.tl-inner { position: relative; min-width: 100%; }
+.tl-grid { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--bd); }
+.tl-tick { position: absolute; top: 5px; left: 4px; font-size: .64rem; color: var(--tx3); font-family: 'IBM Plex Mono', monospace; white-space: nowrap; }
+.tl-event { position: absolute; height: 20px; cursor: pointer; }
+.tl-bar { display: block; height: 14px; margin-top: 3px; border-radius: 3px; opacity: .82; box-shadow: inset 0 0 0 1px rgba(0,0,0,.07); transition: opacity .12s; }
+.tl-event:hover .tl-bar { opacity: 1; }
+.tl-dot { position: absolute; top: 4px; left: 0; width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 0 2px var(--bg2); transition: transform .12s; }
+.tl-event:hover .tl-dot { transform: scale(1.25); }
+.tl-label { position: absolute; top: 1px; font-size: .68rem; color: var(--tx2); white-space: nowrap; pointer-events: none; }
+.tl-event.sel .tl-bar, .tl-event.sel .tl-dot { box-shadow: 0 0 0 2px var(--gold); }
+.tl-event.sel .tl-label { color: var(--gold); font-weight: 600; }
+
+/* Swimlanes: one band per value of the chosen property (one band per SE).
+   Inside a band the events are stacked into as many sub-rows as it takes to
+   keep them from overlapping, so the band grows with its content -- hence the
+   alternating tint, which is what keeps two adjacent bands apart when both are
+   several rows tall. The caption is sticky so it stays readable while panning. */
+.tl-band { position: absolute; left: 0; width: 100%; border-radius: 3px;
+  background: rgba(127,127,127,.05); pointer-events: none; }
+.tl-band.alt { background: rgba(127,127,127,.11); }
+.tl-band-lbl { position: sticky; left: 0; display: inline-flex; align-items: center; gap: .35rem;
+  max-width: 340px; padding: .12rem .45rem; margin: 1px 0 0 2px; border-radius: var(--r);
+  background: var(--bg3); border: 1px solid var(--bd); font-size: .66rem; color: var(--tx2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tl-band-lbl em { font-style: normal; font-family: 'IBM Plex Mono', monospace; font-size: .6rem; color: var(--tx3); }
+
+/* Year-range filter */
+.tl-years { display: inline-flex; align-items: center; gap: .3rem; }
+.tl-years label { font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; color: var(--tx3); }
+.tl-years-sep { color: var(--tx3); }
+.tl-year { width: 6.2rem; padding: .3rem .4rem; cursor: text; font-family: 'IBM Plex Mono', monospace; }
+
+/* Multi-select over node types */
+.tl-multi { position: relative; display: inline-flex; }
+.tl-multi-btn { display: inline-flex; align-items: center; gap: .35rem; cursor: pointer; }
+.tl-multi-caret { font-size: .6rem; color: var(--tx3); }
+/* The panel itself doesn't scroll -- only its list does, so search box and
+   actions stay put while a few hundred swimlanes are scrolled through. */
+.tl-multi-panel { position: absolute; top: calc(100% + 4px); left: 0; z-index: 60; min-width: 240px;
+  max-width: 360px; padding: .4rem; background: var(--bg2);
+  border: 1px solid var(--bd); border-radius: var(--r); box-shadow: 0 4px 14px rgba(0,0,0,.18); }
+.tl-multi-search { width: 100%; padding: .3rem .45rem; margin-bottom: .3rem; font-size: .76rem; cursor: text; }
+.tl-multi-list { max-height: 280px; overflow-y: auto; }
+.tl-multi-empty { padding: .5rem .2rem; font-size: .72rem; color: var(--tx3); text-align: center; }
+.tl-multi-acts { display: flex; align-items: center; justify-content: flex-end; gap: .4rem; flex-wrap: wrap;
+  margin-bottom: .3rem; padding-bottom: .3rem; border-bottom: 1px solid var(--bd); }
+.tl-multi-row { display: flex; align-items: center; gap: .4rem; padding: .18rem .1rem; cursor: pointer; font-size: .74rem; }
+.tl-multi-row:hover { background: var(--bg4); border-radius: var(--r); }
+.tl-multi-row input { margin: 0; flex-shrink: 0; }
+.tl-multi-lbl { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--tx); }
+.tl-multi-cnt { font-family: 'IBM Plex Mono', monospace; font-size: .64rem; color: var(--tx3); flex-shrink: 0; }
+
+/* ── Dashboard tab: freely arrangeable split panes ──────────────────────── */
+.dash-panel { padding: .7rem .8rem .8rem; }
+.dash-bar { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; margin-bottom: .6rem; flex-shrink: 0; }
+.dash-bar-lbl { font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; color: var(--tx3); margin-right: .2rem; }
+.dash-preset { background: var(--bg4); border: 1px solid var(--bd2); color: var(--tx2); padding: .22rem .6rem; border-radius: var(--r); font-size: .7rem; font-family: 'IBM Plex Mono', monospace; transition: all .15s; }
+.dash-preset:hover { border-color: var(--gold); color: var(--gold); }
+.dash-hint { font-size: .66rem; color: var(--tx3); margin-left: auto; }
+
+.dash-root { flex: 1; min-height: 0; overflow: hidden; display: flex; }
+.dash-root > * { flex: 1; min-width: 0; min-height: 0; }
+
+.dash-split { display: flex; width: 100%; height: 100%; min-width: 0; min-height: 0; }
+.dash-split.row { flex-direction: row; }
+.dash-split.col { flex-direction: column; }
+/* min-width/min-height:0 is what lets a slot shrink below its content --
+   without it flex refuses, and dragging a splitter inwards does nothing. */
+.dash-slot { display: flex; flex-shrink: 0; min-width: 0; min-height: 0; overflow: hidden; }
+.dash-slot > * { flex: 1; min-width: 0; min-height: 0; }
+.dash-slot-rest { flex: 1 1 0; }
+
+.dash-splitter { flex: 0 0 6px; position: relative; z-index: 2; touch-action: none; }
+.dash-splitter::after { content: ''; position: absolute; inset: 2px; background: var(--bd); border-radius: 3px; transition: background .12s; }
+.dash-splitter:hover::after { background: var(--gold); }
+.dash-splitter.row { cursor: col-resize; }
+.dash-splitter.col { cursor: row-resize; }
+/* While a splitter is dragged, nothing underneath may select text or show
+   its own cursor -- the gesture belongs to the splitter alone. */
+body.dash-dragging, body.dash-dragging * { user-select: none !important; }
+
+.dash-pane { display: flex; flex-direction: column; width: 100%; height: 100%; min-width: 0; min-height: 0;
+  border: 1px solid var(--bd); border-radius: var(--r); background: var(--bg2); overflow: hidden; }
+.dash-pane-hdr { display: flex; align-items: center; gap: .2rem; padding: .25rem .3rem; background: var(--bg3); border-bottom: 1px solid var(--bd); flex-shrink: 0; }
+.dash-pane-view { background: var(--bg2); border: 1px solid var(--bd2); color: var(--tx2); border-radius: var(--r); font-size: .72rem; padding: .15rem .3rem; max-width: 65%; cursor: pointer; }
+.dash-pane-view:focus { outline: none; border-color: var(--gold); }
+.dash-pane-sp { flex: 1; }
+.dash-pane-btn { background: none; border: 1px solid transparent; color: var(--tx3); border-radius: var(--r); font-size: .78rem; line-height: 1; padding: .18rem .35rem; }
+.dash-pane-btn:hover:not(:disabled) { color: var(--gold); border-color: var(--bd2); }
+.dash-pane-btn:disabled { opacity: .3; cursor: not-allowed; }
+
+/* The views were written to fill the whole content area. Inside a pane they
+   keep their layout but get tighter spacing, and the body becomes a query
+   container so the Explorer's list+detail split folds at the PANE's width
+   rather than the window's. */
+.dash-pane-body { flex: 1; min-height: 0; overflow: hidden; display: flex; container-type: inline-size; }
+/* Steht anstelle der Ansicht, wenn diese abstuerzt (shared/ViewBoundary.jsx) */
+.dash-pane-body-error { flex: 1; min-width: 0; overflow: auto; }
+.dash-pane-body > .panel { flex: 1; min-width: 0; padding: .6rem .7rem 0; }
+.dash-pane-body > .panel-overview { padding-bottom: 1rem; }
+.dash-pane-body .sec-hdr { margin-bottom: .5rem; }
+.dash-pane-body .sec-hdr h2 { font-size: 1rem; }
+.dash-pane-body .frow { margin-bottom: .5rem; gap: .4rem; }
+.dash-pane-body .trail { margin-bottom: .5rem; }
+@container (max-width: 720px) {
+  .ld { grid-template-columns: 1fr; grid-template-rows: 190px 1fr; }
+  .ovgrid { grid-template-columns: 1fr; }
+  .stgrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── Diagramme tab ──────────────────────────────────────────────────────── */
+.chart-ctl { align-items: center; margin-bottom: .5rem; }
+/* Every control says in words what it does -- the tab is the one place where
+   graph vocabulary ("Property", "Kreuztabelle") is unavoidable, so the labels
+   carry the explaining. */
+.chart-ctl-lbl { font-size: .7rem; color: var(--tx3); flex-shrink: 0; text-transform: uppercase; letter-spacing: .05em; }
+.chart-ctl-lbl:not(:first-child) { margin-left: .5rem; }
+.chart-note { font-size: .72rem; color: var(--tx2); margin-bottom: .7rem; flex-shrink: 0; }
+.chart-warn { font-size: .72rem; color: var(--orange); margin: -.3rem 0 .7rem; flex-shrink: 0;
+  border-left: 2px solid var(--orange); padding-left: .55rem; }
+.bpct { color: var(--tx3); min-width: 52px; }
+
+/* ── Hover quick-info card ──────────────────────────────────────────────── */
+/* Portalled to <body> and fixed-positioned, so no panel's overflow can clip
+   it. pointer-events:none is essential rather than cosmetic: the card is
+   placed right next to the cursor, and if it could take the mouse it would
+   steal the hover that opened it and flicker itself away. */
+.nhc {
+  position: fixed; z-index: 4000; width: 320px; max-width: calc(100vw - 16px); max-height: 70vh;
+  overflow: hidden; pointer-events: none;
+  background: var(--bg2); border: 1px solid var(--bd); border-radius: var(--r2);
+  box-shadow: 0 10px 30px rgba(30,45,51,.16), 0 2px 6px rgba(30,45,51,.08);
+  padding: .65rem .75rem; font-size: .76rem; line-height: 1.5;
+  animation: nhc-in .12s ease-out;
+}
+@keyframes nhc-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+.nhc-hdr { display: flex; align-items: center; gap: .4rem; margin-bottom: .3rem; }
+.nhc-title { font-family: 'IBM Plex Sans', sans-serif; font-size: .95rem; font-weight: 600; color: var(--tx);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nhc-sub { display: flex; align-items: center; gap: .4rem; margin-bottom: .5rem; }
+.nhc-id { font-family: 'IBM Plex Mono', monospace; font-size: .64rem; color: var(--tx3);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nhc-img { display: block; width: 100%; max-height: 120px; object-fit: contain;
+  border: 1px solid var(--bd); border-radius: var(--r); background: var(--bg3); margin-bottom: .5rem; }
+.nhc-dl { display: grid; grid-template-columns: auto 1fr; gap: .12rem .7rem; margin-bottom: .35rem; }
+.nhc-dl dt { color: var(--tx3); font-size: .64rem; text-transform: uppercase; letter-spacing: .05em;
+  white-space: nowrap; padding-top: .12rem; }
+.nhc-dl dd { color: var(--tx); font-family: 'IBM Plex Mono', monospace; font-size: .72rem; word-break: break-word; }
+.nhc-more { font-size: .64rem; color: var(--tx3); font-style: italic; margin-bottom: .35rem; }
+.nhc-conns { border-top: 1px solid var(--bd); padding-top: .4rem; margin-top: .2rem; display: flex; flex-direction: column; gap: .3rem; }
+.nhc-conn-top { display: flex; align-items: center; gap: .35rem; }
+.nhc-conn-dir { font-family: 'IBM Plex Mono', monospace; font-size: .68rem; color: var(--gold); flex-shrink: 0; }
+.nhc-conn-lbl { font-size: .66rem; text-transform: uppercase; letter-spacing: .05em; color: var(--tx2);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nhc-conn-cnt { font-family: 'IBM Plex Mono', monospace; font-size: .62rem; color: var(--tx3); margin-left: auto; flex-shrink: 0; }
+.nhc-conn-sample { font-size: .7rem; color: var(--tx); padding-left: 1rem;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nhc-foot { border-top: 1px solid var(--bd); margin-top: .5rem; padding-top: .35rem;
+  font-size: .62rem; color: var(--tx3); text-align: right; letter-spacing: .04em; }
+
+/* -- Graph tab (free node-by-node exploration) -- */
+.gx-canvas { flex: 1; min-height: 0; border: 1px solid var(--bd); border-radius: var(--r);
+  overflow: hidden; background: var(--bg2); }
+.gx-warn { border-color: var(--orange); color: var(--orange); }
+
+/* Start-node picker: an overlay, so opening it never pushes the canvas around. */
+.gx-picker { position: relative; flex: 1; min-width: 220px; display: flex; }
+.gx-picker .si { width: 100%; }
+.gx-picker-panel { position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 60;
+  max-height: 320px; overflow-y: auto; background: var(--bg2); border: 1px solid var(--bd);
+  border-radius: var(--r); box-shadow: 0 8px 24px rgba(30,45,51,.13); padding: .25rem; }
+.gx-picker-empty { padding: .55rem .4rem; font-size: .74rem; color: var(--tx3); text-align: center; }
+.gx-picker-row { display: flex; align-items: center; gap: .5rem; padding: .32rem .5rem;
+  border-radius: var(--r); cursor: pointer; font-size: .78rem; }
+.gx-picker-row:hover { background: var(--bg4); }
+.gx-picker-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: .1rem; }
+.gx-picker-label { color: var(--tx); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gx-picker-sub { font-size: .68rem; color: var(--tx3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.gx-check { display: inline-flex; align-items: center; gap: .35rem; font-size: .72rem;
+  color: var(--tx2); cursor: pointer; user-select: none; white-space: nowrap; }
+.gx-check input { margin: 0; }
+
+/* Focus bar: what the selected box holds, and what of it is still unopened. */
+.gx-focus { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; flex-shrink: 0;
+  background: var(--bg3); border: 1px solid var(--bd); border-radius: var(--r);
+  padding: .4rem .6rem; margin-bottom: .7rem; }
+.gx-focus-label { font-family: 'IBM Plex Mono', monospace; font-size: .82rem; color: var(--tx);
+  max-width: 26rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gx-focus-groups { display: flex; align-items: center; gap: .3rem .5rem; flex-wrap: wrap;
+  max-height: 4.6rem; overflow-y: auto; }
+.gx-focus-none { font-size: .72rem; color: var(--tx3); font-style: italic; }
+.gx-group { display: inline-flex; align-items: center; gap: .3rem; font-size: .7rem; color: var(--tx2);
+  border: 1px solid var(--bd2); background: var(--bg2); border-radius: 100px; padding: .1rem .5rem; }
+.gx-group-dir { font-family: 'IBM Plex Mono', monospace; color: var(--gold); }
+.gx-group em { font-style: normal; font-family: 'IBM Plex Mono', monospace; font-size: .64rem; color: var(--tx3); }
+.gx-group-more { background: var(--bg4); border: 1px solid var(--bd2); color: var(--gold);
+  font-family: 'IBM Plex Mono', monospace; font-size: .62rem; line-height: 1.4;
+  padding: 0 .3rem; border-radius: var(--r); transition: all .15s; }
+.gx-group-more:hover { background: var(--gold); color: var(--bg); border-color: var(--gold); }
+
+/* Empty state: the canvas has nothing to draw until a root is picked. */
+.gx-start { height: 100%; overflow-y: auto; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: .4rem; padding: 1.5rem; }
+.gx-start-hd { font-size: 1rem; font-weight: 600; color: var(--tx2); }
+.gx-start-sub { font-size: .78rem; color: var(--tx3); max-width: 34rem; text-align: center; margin-bottom: .6rem; }
+.gx-start-list { width: 100%; max-width: 34rem; border: 1px solid var(--bd); border-radius: var(--r);
+  background: var(--bg2); padding: .25rem; }
+
+/* One box on the canvas. The type color is a left edge rather than a fill:
+   labels here are real text, and several palette entries are too pale to read
+   dark text on -- the Matrix can fill because its boxes hold short ids. */
+.gx-node { width: 100%; height: 100%; display: flex; align-items: center; gap: .4rem;
+  background: var(--bg2); border: 1px solid var(--bd); border-left: 4px solid var(--bd2);
+  border-radius: var(--r); padding: 0 .45rem; cursor: pointer; transition: box-shadow .12s, border-color .12s; }
+.gx-node:hover { border-color: var(--gold); }
+.gx-node.root { border-top-color: var(--gold); border-right-color: var(--gold); border-bottom-color: var(--gold); }
+.gx-node.sel { box-shadow: 0 0 0 3px rgba(31,141,166,.3); border-color: var(--gold); }
+.gx-node-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.gx-node-main { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+.gx-node-label { font-size: .74rem; color: var(--tx); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gx-node-type { font-size: .6rem; color: var(--tx3); text-transform: uppercase; letter-spacing: .04em;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gx-node-badge { flex-shrink: 0; font-family: 'IBM Plex Mono', monospace; font-size: .6rem;
+  background: var(--bg4); border: 1px solid var(--bd2); color: var(--tx2);
+  border-radius: 100px; padding: 0 .35rem; }
+.gx-node-badge.open { background: rgba(31,141,166,.12); border-color: rgba(31,141,166,.3); color: var(--gold); }
+.gx-node-badge.done { background: none; border-color: transparent; color: var(--tx3); }
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bd2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--tx3); }
+
+@media (max-width: 720px) {
+  .ld { grid-template-columns: 1fr; grid-template-rows: 280px 1fr; }
+  .stgrid { grid-template-columns: repeat(2, 1fr); }
+}

@@ -1,0 +1,21 @@
+{
+  "meta": { "title": "Atypical / hostile graph-JSON for data-independence tests", "node_count": 10, "edge_count": 5, "generated_by": "review fixture" },
+  "node_types": { "Straße/Ω": 1, "GeoThing": 3, "SE": 4, "Müll-Typ 日本語": 1 },
+  "edge_types": {
+    "http://ex.org/rel#dot1:widerspruch": 2,
+    "http://ex.org/rel2#dot1:unter": 2,
+    "KNOWS": 1
+  },
+  "nodes": {
+    "n1": { "l": "Node Ω / Straße", "t": "Straße/Ω", "a": { "desc": "plain text", "geom": "POINT(16.37 48.20)" }, "o": { "KNOWS": ["arr1"] }, "i": {} },
+    "n2_badgeo": { "l": "Bad geometry", "t": "GeoThing", "a": { "geom": "POINT(abc def)" }, "o": {}, "i": {} },
+    "n3_projgeo": { "l": "Projected geometry (needs non-WGS84 EPSG)", "t": "GeoThing", "a": { "geom": "POLYGON((-100000 5000000, -100010 5000000, -100010 5000010, -100000 5000000))" }, "o": {}, "i": {} },
+    "n4_notwkt": { "l": "Not actually WKT", "t": "GeoThing", "a": { "note": "POINTER to a POLYGONAL discussion (not geometry)" }, "o": {}, "i": {} },
+    "SE_A": { "l": "SE A", "t": "SE", "a": {}, "o": { "http://ex.org/rel#dot1:widerspruch": ["SE_B"] }, "i": { "http://ex.org/rel#dot1:widerspruch": ["SE_B"] } },
+    "SE_B": { "l": "SE B", "t": "SE", "a": {}, "o": { "http://ex.org/rel#dot1:widerspruch": ["SE_A"] }, "i": { "http://ex.org/rel#dot1:widerspruch": ["SE_A"] } },
+    "SE_C": { "l": "SE C", "t": "SE", "a": {}, "o": { "http://ex.org/rel2#dot1:unter": ["SE_D"] }, "i": { "http://ex.org/rel2#dot1:unter": ["SE_D"] } },
+    "SE_D": { "l": "SE D", "t": "SE", "a": {}, "o": { "http://ex.org/rel2#dot1:unter": ["SE_C"] }, "i": { "http://ex.org/rel2#dot1:unter": ["SE_C"] } },
+    "arr1": { "l": "Node with non-scalar attributes", "t": "Müll-Typ 日本語", "a": { "tags": ["a", "b", "c"], "meta": { "x": 1 }, "count": 42, "nothing": null }, "o": {}, "i": { "KNOWS": ["n1"] } },
+    "orphan": { "l": "Orphan / no type", "t": "", "a": { "geom": "LINESTRING (16.1 48.1, 16.2 48.2)" }, "o": {}, "i": {} }
+  }
+}
