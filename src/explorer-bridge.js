@@ -677,6 +677,14 @@
     el.style.opacity = links.length || panelOpen ? '.92' : '.55'
     el.textContent = ''
 
+    // Web-Fassung (GitHub Pages): Die Kopplung bleibt bewusst der lokalen
+    // Fassung vorbehalten. Die Leiste bleibt trotzdem stehen, damit niemand
+    // sie sucht -- nur eben mit dem Hinweis, wo es sie gibt.
+    if (api && api.web) {
+      renderWebNotice(el)
+      return
+    }
+
     var open = links.filter(function (l) { return l.state === 'open' })
 
     var head = document.createElement('div')
@@ -748,6 +756,33 @@
     el.appendChild(form)
   }
 
+  function renderWebNotice(el) {
+    var head = document.createElement('div')
+    head.style.cssText = 'cursor:pointer;display:flex;gap:6px;align-items:center'
+    head.title = 'QGIS and Blender connect to the local version only'
+    var dot = document.createElement('span')
+    dot.style.cssText = 'width:8px;height:8px;border-radius:50%;background:#8a96a3'
+    head.appendChild(dot)
+    head.appendChild(document.createTextNode('QGIS / Blender: local version only'))
+    var caret = document.createElement('span')
+    caret.style.cssText = 'margin-left:auto;opacity:.6'
+    caret.textContent = panelOpen ? '▾' : '▸'
+    head.appendChild(caret)
+    head.onclick = function () {
+      panelOpen = !panelOpen
+      renderPanel()
+    }
+    el.appendChild(head)
+    if (!panelOpen) return
+
+    var hint = document.createElement('div')
+    hint.style.cssText = 'margin-top:6px;opacity:.75'
+    hint.textContent = 'This online version cannot connect to QGIS or Blender. ' +
+      'Download the Explorer and run it locally (START-Graph-Explorer.bat or the standalone file) ' +
+      'to link it with the QGIS plugin or the Blender add-on.'
+    el.appendChild(hint)
+  }
+
   function stateText(state) {
     return { open: 'connected', connecting: 'connecting …', closed: 'disconnected', error: 'not reachable' }[state] || state
   }
@@ -792,7 +827,7 @@
         if (state.selectedId !== prev.selectedId || state.graph !== prev.graph) pushSelection()
       })
 
-      initialLinks().forEach(function (entry) { connect(entry.url, entry.name) })
+      if (!api.web) initialLinks().forEach(function (entry) { connect(entry.url, entry.name) })
       renderPanel()
     },
     function () {

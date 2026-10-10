@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import { useStore } from './store'
 import { typeLabel, edgeLabel, humaniseKey } from './lib/schema'
+import { IS_WEB } from './lib/webBuild'
 import './styles.css'
 // Die Browser-Seite der Kopplung an QGIS und Blender. Sie ist in jedem Build
 // dabei -- start.bat und Standalone-Datei sind damit ein und derselbe
@@ -28,6 +29,9 @@ window.__GRAPH_EXPLORER_API__ = {
   // Dieselben Funktionen, mit denen die Ansichten Namen zeigen -- die Brücke
   // reicht sie an QGIS und Blender weiter (describeGraph -> labels).
   labels: { type: typeLabel, edge: edgeLabel, attr: humaniseKey },
+  // Web-Fassung auf GitHub Pages: Die Brücke zeigt dann nur einen Hinweis auf
+  // die lokale Fassung statt des Verbindungsfelds.
+  web: IS_WEB,
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(

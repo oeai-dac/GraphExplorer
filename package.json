@@ -1,13 +1,14 @@
 {
   "name": "graph-explorer",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "description": "Browser-based exploration of knowledge graphs - runs entirely client-side, no backend.",
   "license": "GPL-3.0-or-later",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:pages": "vite build --mode pages",
     "build:standalone": "node scripts/build-standalone.mjs",
     "preview": "vite preview",
     "check": "node tests/fixtures/run-bridge-checks.mjs && node --max-old-space-size=4096 tests/fixtures/run-lib-checks.mjs && node --max-old-space-size=4096 tests/fixtures/run-rdf-import-check.mjs && node --max-old-space-size=4096 tests/fixtures/run-collapse-check.mjs && node tests/fixtures/run-dashboard-layout-check.mjs && node --max-old-space-size=4096 tests/fixtures/run-node-preview-check.mjs && node --max-old-space-size=4096 tests/fixtures/run-chart-data-check.mjs && node tests/fixtures/run-tile-depth-check.mjs && node --max-old-space-size=4096 tests/fixtures/run-graph-explore-check.mjs"

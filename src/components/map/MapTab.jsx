@@ -9,6 +9,7 @@ import { nextTileDepth } from '../../lib/tileDepth'
 import { EpsgPrompt } from './EpsgPrompt'
 import { MapSearch } from './MapSearch'
 import { LayerControlPanel } from './LayerControlPanel'
+import { IS_WEB } from '../../lib/webBuild'
 
 // Wie tief man hineinzoomen kann. Bei 48° Breite entspricht Stufe 24 etwa
 // 0,6 cm pro Bildschirmpunkt -- fein genug, um an einen einzelnen Befund
@@ -39,7 +40,7 @@ const INITIAL_FIT_MAX_ZOOM = 19
 //
 // maxNativeZoom = tiefste Stufe, die es beim Anbieter wirklich gibt; darueber
 // skaliert Leaflet die vorhandene Kachel hoch, statt ins Leere zu laden.
-const BASEMAPS = [
+const ALL_BASEMAPS = [
   {
     // CARTO's light basemap used to sit here; it now answers every
     // request without an API key with an "API KEY REQUIRED" tile.
@@ -102,6 +103,8 @@ const BASEMAPS = [
   },
   { id: 'none', label: 'No background', url: null, attribution: '', maxNativeZoom: 19 },
 ]
+// Online gibt es kein "neben der HTML-Datei" -- dort entfällt das eigene Raster.
+const BASEMAPS = IS_WEB ? ALL_BASEMAPS.filter((b) => b.id !== 'local') : ALL_BASEMAPS
 const HIGHLIGHT_COLOR = '#1f8da6' // matches --gold; hardcoded so Leaflet's SVG
                                    // attribute path always resolves it (a CSS
                                    // var() reference isn't guaranteed to)

@@ -37,6 +37,12 @@ input, select { font-family: inherit; }
 .drop-ico { font-size: 2.2rem; margin-bottom: .6rem; }
 .dropzone p { font-size: 1rem; font-weight: 500; margin-bottom: .2rem; }
 .dropzone small { color: var(--tx3); font-size: .82rem; }
+.land-choices { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+.land-choices .dropzone { padding: 2rem 1.25rem; }
+.dropzone.example { font: inherit; color: inherit; width: 100%; }
+.dropzone.example:disabled { cursor: progress; opacity: .7; }
+@media (max-width: 560px) { .land-choices { grid-template-columns: 1fr; } }
+.land-privacy { color: var(--tx2); font-size: .78rem; margin-top: 1rem; line-height: 1.5; }
 .land-hint { color: var(--tx3); font-size: .72rem; margin-top: 1.5rem; letter-spacing: .06em; text-transform: uppercase; }
 .err { color: var(--red); font-size: .82rem; margin-top: .75rem; min-height: 1.2em; }
 .load-info { color: var(--gold); font-size: .82rem; margin-top: .75rem; }
