@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.0.0-blue" alt="Version 1.0.0">
+  <img src="https://img.shields.io/badge/version-1.1.0-blue" alt="Version 1.1.0">
   <img src="https://img.shields.io/badge/React-18-61dafb?logo=react&logoColor=white" alt="React 18">
   <img src="https://img.shields.io/badge/Vite-5-646cff?logo=vite&logoColor=white" alt="Vite 5">
   <img src="https://img.shields.io/badge/Node.js-18+-5fa04e?logo=nodedotjs&logoColor=white" alt="Node.js 18+">
@@ -34,8 +34,8 @@ flowchart LR
 ### New to knowledge graphs?
 
 - **Knowledge graph** — data stored as connections: *things* (a site, a layer, a find) and *how they relate* ("was found in", "consists of", "lies above").
-- **Node** — one thing in the graph, e.g. the find *TSP-1003-04*. Every node has a **type** (e.g. *Find*, *Stratigraphic Unit*) and can carry **attributes** — plain values such as a description, a weight or a date.
-- **Connection** (or *edge*) — a link between two nodes, e.g. *TSP-1003-04 – consists of – Bronze*. The GraphExplorer shows every connection from both sides: The find *consists of* a material and the material *is material of* a find.
+- **Node** — one thing in the graph, e.g. the find *TSP-1004-02*. Every node has a **type** (e.g. *Find*, *Stratigraphic Unit*) and can carry **attributes** — plain values such as a description, a weight or a date.
+- **Connection** (or *edge*) — a link between two nodes, e.g. *TSP-1004-02 – consists of – Bronze*. The GraphExplorer shows every connection from both sides: The find *consists of* a material and the material *is material of* a find.
 - **RDF** — the standard file format for knowledge graphs. **CIDOC CRM** is a widely used vocabulary for cultural heritage data.
 
 You do not need to know any of this in detail to use the GraphExplorer — if you can read, you can explore the graph.
@@ -331,7 +331,7 @@ The **Graph** shows the knowledge graph as what it is: a network of nodes and co
 - **Drag** nodes to arrange them; existing nodes stay where they are when new ones appear.
 - **⤢ Rearrange** arranges the visible part neatly once; **⊖ Collapse all** goes back to the start node.
 - **Double-click** a node (or **Open in Explorer**) to open it in the Explorer.
-- The bar above the network lists the connections of the selected node, with how many are shown (e.g. *is material of 5/5*).
+- The bar above the network lists the connections of the selected node, with how many are shown (e.g. *is material of 9/9*).
 
 <details>
 <summary><b>Details: large graphs</b></summary>
@@ -462,7 +462,7 @@ The **Charts** answer one question: *how many nodes have which value?*
     <img src="docs/images/charts_pivot.png" alt="Pivot Table" width="1200">
 </p>
 
-The pivot table above crosses material and object type: 84 sherds are ceramic, 31 nails are iron.
+The pivot table above crosses object type and stratigraphic unit: SU3002 holds the most sherds, SU1006 the most coins.
 
 - **Click** a bar or a table cell to list exactly those nodes in the Explorer.
 - **Sort** by count or by label (labels in natural order: *SU 2* before *SU 10*; dates chronologically).
@@ -524,7 +524,7 @@ The file is named after the graph title; if types are collapsed, `-collapsed` is
 
 The GraphExplorer can be linked to **QGIS** and **Blender**: select a node here, and the corresponding feature or object is selected there — and the other way round. Both applications can be connected at the same time.
 
-The plugins for QGIS and Blender are separate projects and are installed in the respective application. They need a running GraphExplorer:
+The plugins for [QGIS](https://github.com/oeai-dac/GraphExplorer_QGIS) and [Blender](https://github.com/oeai-dac/GraphExplorer_Blender) are separate projects and are installed in the respective application. They need a running GraphExplorer:
 
 1. Start the GraphExplorer and load your graph.
 2. In QGIS or Blender, copy the connection address from the plugin.
@@ -538,19 +538,34 @@ The plugins for QGIS and Blender are separate projects and are installed in the 
 
 ## Example Data
 
-The folder `0_exampleData/` contains a small, **entirely fictional** excavation — in the style of the OntoCartographer Studio example — that uses every view of the GraphExplorer: *Wadi al-Sirr*, with *The Secret Place* and *The Well of Souls*, three sondages, 40 stratigraphic units and 245 finds from the New Kingdom to modern times.
+The folder `0_exampleData/` contains a small, **entirely fictional** excavation that uses every view of the GraphExplorer: *Serpent's Meadow*, a stretch of Danube floodplain, with two sites, *The Secret Place* and *The Well of Souls*. It has three sondages, 40 stratigraphic units and 203 finds, from the Late Bronze Age to modern times. The same excavation also comes as GIS layers for QGIS and as 3D bodies for Blender, so you can try the connection to both through their respective plugins.
 
 1. [Start the GraphExplorer](#start).
 2. Drop `0_exampleData/GraphExplorer_Example.json` onto the start page.
 3. When the map asks for the coordinate system, enter `4326`.
-4. In the [Overview](#1-overview), collapse *Production* with ⤺ — then the finds appear on the timeline.
+4. In the [Overview](#1-overview), collapse *Production* with ⤺. Then the finds appear on the timeline.
 
 | File | Content |
 |---|---|
 | `GraphExplorer_Example.json` | The example graph (graph JSON, English labels with German translations) |
-| `make_example.py` | The Python script that generated it — run `python make_example.py GraphExplorer_Example.json` to recreate it |
+| `GraphExplorer_Example.gpkg` | To connect the GraphExplorer with QGIS through the plugin **GraphExplorer Link for QGIS**: a GeoPackage containing sondages, plans of the stratigraphic units and find spots (EPSG:32633) |
+| `GraphExplorer_Example.obj` + `.mtl` | To connect the GraphExplorer with Blender through the add-on **GraphExplorer Link for Blender**: an .obj file with one 3D body per stratigraphic unit and a marker per find, named like the nodes in the graph |
+| `make_example.py` | The Python script that generated all of them |
 
-All sites, people, units, finds, and dates are invented.
+All sites, people, units, finds and dates are invented.
+
+<details>
+<summary>Recreating the files</summary>
+
+Run `python make_example.py GraphExplorer_Example.json`. The script needs `numpy`, `shapely` and `pyproj`. It writes the GeoPackage only if GDAL's Python bindings are available. The simplest way is QGIS's own Python:
+
+```
+"C:\Program Files\QGIS 3.44.4\bin\python-qgis.bat" make_example.py GraphExplorer_Example.json
+```
+
+In Blender, use *File → Import → Wavefront (.obj)* with the default axis settings. The coordinates are metres east and north of E 605211 / N 5339827 (UTM 33N) and heights above sea level, so they line up with the GeoPackage.
+</details>
+
 
 ---
 

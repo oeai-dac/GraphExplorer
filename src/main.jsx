@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import { useStore } from './store'
+import { typeLabel, edgeLabel, humaniseKey } from './lib/schema'
 import './styles.css'
 // Die Browser-Seite der Kopplung an QGIS und Blender. Sie ist in jedem Build
 // dabei -- start.bat und Standalone-Datei sind damit ein und derselbe
@@ -17,11 +18,16 @@ import './explorer-bridge.js'
 // 2: describeValues/collectValues -- die Graph-Seite der Werteübernahme in
 //    die QGIS-Attributtabelle. Die Wirte prüfen auf "mindestens", nicht auf
 //    "genau".
-const API_VERSION = 2
+// 3: describeGraph liefert zusätzlich die Anzeigenamen (labels), damit die
+//    Wirte Typen, Beziehungen und Attribute so nennen wie der Explorer.
+const API_VERSION = 3
 
 window.__GRAPH_EXPLORER_API__ = {
   version: API_VERSION,
   store: useStore,
+  // Dieselben Funktionen, mit denen die Ansichten Namen zeigen -- die Brücke
+  // reicht sie an QGIS und Blender weiter (describeGraph -> labels).
+  labels: { type: typeLabel, edge: edgeLabel, attr: humaniseKey },
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(

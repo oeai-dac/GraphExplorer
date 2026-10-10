@@ -139,6 +139,29 @@ check('Knotentypen erkannt', described.types.map((t) => t.type).sort(),
       ['Befund', 'Fund', 'Material'])
 check('Attribute je Typ', described.types.find((t) => t.type === 'Befund').attrs,
       ['ansprache', 'se'])
+check('ohne Namensfunktionen keine Anzeigenamen', described.labels, undefined)
+
+// Mit den Namensfunktionen der App (lib/schema.js) kommen die Anzeigenamen mit
+// -- so heißt in QGIS alles wie im Explorer. Hier mit Stellvertretern, die
+// zeigen, dass Schema und Schlüssel ankommen.
+window.__GRAPH_EXPLORER_API__.labels = {
+  type: (schema, t) => (schema && schema.typeLabels[t]) || t,
+  edge: (schema, e) => (schema && schema.edgeLabels[e]) || e,
+  attr: (k) => k.replace(/_/g, ' '),
+}
+store._set({ schema: { typeLabels: { Befund: 'Befund (Grabung)' },
+                       edgeLabels: { ENTHAELT_FN: 'enthält Fund' } } })
+socket.takeSent()
+socket.fromQgis({ id: 21, method: 'describeGraph', args: [] })
+const named = socket.takeSent()[0].result
+check('Typname aus dem Schema', named.types.find((t) => t.type === 'Befund').label,
+      'Befund (Grabung)')
+check('Typ ohne Schemaeintrag behält den Schlüssel', named.labels.types.Material, 'Material')
+check('Beziehungsname aus dem Schema', named.labels.rels.ENTHAELT_FN, 'enthält Fund')
+check('beide Beziehungen erfasst', 'ENTHAELT_FN' in named.labels.rels &&
+      'MATERIAL' in named.labels.rels, true)
+check('Attributname über die App-Funktion', named.labels.attrs.material, 'material')
+delete window.__GRAPH_EXPLORER_API__.labels
 
 socket.fromQgis({ id: 3, method: 'collectKeys', args: [SPEC] })
 check('Schlüssel der Befunde', socket.takeSent()[0].result,

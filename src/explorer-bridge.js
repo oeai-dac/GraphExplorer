@@ -169,6 +169,27 @@
     return found
   }
 
+  /* Die Namen, unter denen der Explorer Typen, Beziehungen und Attribute zeigt.
+   *
+   * Ein Wirt bekommt sonst nur die Schlüssel -- bei Studio-Exporten Dinge wie
+   * ".../A8_Stratigraphic_Unit#as:stratigraphic_unit", wo der Explorer
+   * "Stratigraphic Unit" zeigt. Damit in QGIS dieselben Namen stehen wie hier,
+   * kommen sie aus denselben Funktionen (lib/schema.js, über
+   * __GRAPH_EXPLORER_API__.labels) und nicht aus einem Nachbau. Fehlen die
+   * Funktionen (älterer Build), gibt es keine Namen, und der Wirt kürzt selbst. */
+  function displayLabels(byType, rels) {
+    var fns = api.labels
+    if (!fns) return null
+    var schema = api.store.getState().schema
+    var out = { types: {}, rels: {}, attrs: {} }
+    Object.keys(byType).forEach(function (t) {
+      out.types[t] = fns.type(schema, t)
+      for (var a in byType[t].attrs) out.attrs[a] = fns.attr(a)
+    })
+    Object.keys(rels).forEach(function (r) { out.rels[r] = fns.edge(schema, r) })
+    return out
+  }
+
   // -- Werte, die ein Wirt in seine eigene Tabelle übernehmen kann ----------
   //
   // Der Wirt (QGIS) hat eine Attributtabelle, der Graph hat Werte. Was hier
@@ -256,16 +277,19 @@
       if (!graph || !graph.nodes) return { loaded: false, types: [] }
 
       var byType = {}
+      var rels = {}
       var ids = Object.keys(graph.nodes)
       for (var i = 0; i < ids.length; i++) {
         var nd = graph.nodes[ids[i]]
         var bucket = byType[nd.t] || (byType[nd.t] = { type: nd.t, count: 0, attrs: {} })
         bucket.count++
         // Über alle Knoten eines Typs zu laufen wäre bei 120.000 Knoten
-        // verschwenderisch, nur um Attributnamen einzusammeln -- die ersten
-        // paar hundert je Typ zeigen das Feldinventar zuverlässig genug.
+        // verschwenderisch, nur um Attribut- und Beziehungsnamen einzusammeln --
+        // die ersten paar hundert je Typ zeigen das Inventar zuverlässig genug.
         if (bucket.count <= 200) {
           for (var a in (nd.a || {})) bucket.attrs[a] = true
+          for (var ro in (nd.o || {})) rels[ro] = true
+          for (var ri in (nd.i || {})) rels[ri] = true
         }
       }
 
@@ -275,7 +299,13 @@
       types.sort(function (x, y) { return y.count - x.count })
 
       var meta = graph.meta || {}
-      return { loaded: true, title: meta.title || '', nodeCount: ids.length, types: types }
+      var out = { loaded: true, title: meta.title || '', nodeCount: ids.length, types: types }
+      var labels = displayLabels(byType, rels)
+      if (labels) {
+        out.labels = labels
+        types.forEach(function (t) { t.label = labels.types[t.type] })
+      }
+      return out
     },
 
     /* Die Graph-Seite einer Verknüpfung: alle Knoten des konfigurierten Typs

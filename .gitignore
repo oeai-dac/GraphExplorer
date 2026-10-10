@@ -16,3 +16,9 @@ tests/fixtures/out_*
 Thumbs.db
 .vscode/
 *.log
+
+# local map tiles
+tiles/
+# Temporary files QGIS creates next to an open GeoPackage
+*.gpkg-shm
+*.gpkg-wal

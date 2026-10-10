@@ -1,0 +1,105 @@
+newmtl flood_deposit
+Kd 0.620 0.520 0.380
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl looting_pit_fill
+Kd 0.480 0.420 0.340
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl collapse_wall
+Kd 0.700 0.670 0.600
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl destruction_burning
+Kd 0.160 0.130 0.120
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl floor
+Kd 0.850 0.800 0.700
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl use_horizont
+Kd 0.560 0.490 0.410
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl pit_fill
+Kd 0.360 0.300 0.250
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl wall_foundation
+Kd 0.800 0.770 0.700
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl construction_fill
+Kd 0.720 0.580 0.480
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl natural_gravel
+Kd 0.660 0.650 0.600
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl well_fill
+Kd 0.880 0.820 0.620
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl pit_cut
+Kd 0.850 0.150 0.150
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl looting_pit_cut
+Kd 0.850 0.150 0.150
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl well_cut
+Kd 0.850 0.150 0.150
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
+newmtl find
+Kd 0.950 0.750 0.150
+Ka 0 0 0
+Ks 0 0 0
+d 1
+illum 1
+
