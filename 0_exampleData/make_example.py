@@ -1,4 +1,4 @@
-"""Generates a fictional, Indy-style example excavation for the GraphExplorer:
+"""Generates a fictional example excavation, with a wink at adventure films, for the GraphExplorer:
 three sondages in the Danube floodplain of the Vienna Prater.
 
 Everything here is invented: sites, people, units, finds, dates and
@@ -673,22 +673,22 @@ ws = node('site', EX + 'serpents_meadow', "Serpent's Meadow",
 node('ident', EX + 'SA', 'SA'); link(ws, 'ident', EX + 'SA')
 
 people = {
-    'jones': node('person', EX + 'person_h_jones', 'Dr. Henry Jones Jr.'),
-    'schneider': node('person', EX + 'person_e_schneider', 'Dr. Elsa Schneider'),
-    'ravenwood': node('person', EX + 'person_m_ravenwood', 'Marion Ravenwood'),
-    'brody': node('person', EX + 'person_m_brody', 'Dr. Marcus Brody'),
+    'flint': node('person', EX + 'person_j_flint', 'Dr. Junia Flint'),
+    'cross': node('person', EX + 'person_r_cross', 'Dr. Rika Cross'),
+    'whipley': node('person', EX + 'person_m_whipley', 'Maxwell Whipley'),
+    'maze': node('person', EX + 'person_e_maze', 'Dr. Erasmus Maze'),
 }
 
 SITES = [
     # site id, label, description, short, excavation id, excavation label, start, end, directors,
     # origin (m), sondages: (id, label, (x, y, w, h), story, ground level), last year a find can be from
     ('the_secret_place', 'The Secret Place', 'A Roman sanctuary of Mithras and its storeroom', 'TSP', 'secret_place_excavation', 'Excavation of the Secret Place',
-     '1981', '1989', ['ravenwood', 'brody'], (0, 0),
+     '1981', '1989', ['whipley', 'maze'], (0, 0),
      [('SO1', 'Secret Place Sondage 1', (0, 0, 10, 10), story_tsp_so1, 157.20),
       ('SO2', 'Secret Place Sondage 2', (4, 24, 8, 6), story_tsp_so2, 157.35)], 1980),
     ('the_well_of_souls', 'The Well of Souls',
      'A Bronze Age well with a votive deposit, sealed and built over by an Iron Age shrine', 'WOS', 'well_of_souls_excavation', 'Excavation of the Well of Souls',
-     '1936', '1938', ['jones', 'schneider'], (16, 4),
+     '1936', '1938', ['flint', 'cross'], (16, 4),
      [('SO1', 'Well of Souls Sondage 1', (0, 0, 12, 12), story_wos_so1, 156.80)], 1935),
 ]
 

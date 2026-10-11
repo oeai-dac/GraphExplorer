@@ -689,7 +689,7 @@
 
     var head = document.createElement('div')
     head.style.cssText = 'cursor:pointer;display:flex;gap:6px;align-items:center'
-    head.title = 'Connect QGIS or Blender to this Explorer'
+    head.title = 'Connect an application to this Explorer'
     var dot = document.createElement('span')
     dot.style.cssText = 'width:8px;height:8px;border-radius:50%;background:' +
       (open.length ? '#5cb85c' : links.length ? '#d9534f' : '#8a96a3')
@@ -697,7 +697,7 @@
     head.appendChild(document.createTextNode(
       open.length ? open.map(label).join(' · ')
         : links.length ? 'not connected'
-        : 'Connect QGIS / Blender'
+        : 'Connect application'
     ))
     var caret = document.createElement('span')
     caret.style.cssText = 'margin-left:auto;opacity:.6'
@@ -717,7 +717,7 @@
       row.appendChild(document.createTextNode(label(link) + ' — ' + stateText(link.state)))
       var x = document.createElement('button')
       x.textContent = '✕'
-      x.title = 'Trennen'
+      x.title = 'Disconnect'
       x.style.cssText = 'margin-left:auto;background:none;border:0;color:#fff;cursor:pointer;padding:0 2px'
       x.onclick = function () { disconnect(link) }
       row.appendChild(x)
@@ -727,7 +727,7 @@
     var hint = document.createElement('div')
     hint.style.cssText = 'margin-top:6px;opacity:.6'
     hint.textContent = (links.length ? 'Connect another application' : 'Connect an application') +
-      ' — in QGIS or Blender, copy the connection for a running Explorer and paste it here:'
+      ' — in the application, copy the connection address and paste it here:'
     el.appendChild(hint)
 
     var form = document.createElement('div')
@@ -759,11 +759,11 @@
   function renderWebNotice(el) {
     var head = document.createElement('div')
     head.style.cssText = 'cursor:pointer;display:flex;gap:6px;align-items:center'
-    head.title = 'QGIS and Blender connect to the local version only'
+    head.title = 'Applications connect to the local version only'
     var dot = document.createElement('span')
     dot.style.cssText = 'width:8px;height:8px;border-radius:50%;background:#8a96a3'
     head.appendChild(dot)
-    head.appendChild(document.createTextNode('QGIS / Blender: local version only'))
+    head.appendChild(document.createTextNode('Applications: local version only'))
     var caret = document.createElement('span')
     caret.style.cssText = 'margin-left:auto;opacity:.6'
     caret.textContent = panelOpen ? '▾' : '▸'
@@ -777,9 +777,9 @@
 
     var hint = document.createElement('div')
     hint.style.cssText = 'margin-top:6px;opacity:.75'
-    hint.textContent = 'This online version cannot connect to QGIS or Blender. ' +
+    hint.textContent = 'This online version cannot connect to other applications. ' +
       'Download the Explorer and run it locally (START-Graph-Explorer.bat or the standalone file) ' +
-      'to link it with the QGIS plugin or the Blender add-on.'
+      'to connect it to an application such as QGIS, Blender or CloudCompare.'
     el.appendChild(hint)
   }
 

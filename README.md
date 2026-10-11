@@ -28,7 +28,7 @@ flowchart LR
     R["Any RDF file<br/>TTL · TriG · NT · NQ · N3"] --> G
     J --> G["GraphExplorer"]
     G --> V["Overview · Explorer · Graph<br/>Harris Matrix · Map · Timeline<br/>Charts · Search · Dashboard"]
-    G <-. "live selection" .-> P["QGIS · Blender<br/>(separate plugins)"]
+    G <-. "live selection" .-> P["Other applications<br/>e.g. QGIS · Blender · CloudCompare<br/>(separate GraphExplorer Links)"]
 ```
 
 ### New to knowledge graphs?
@@ -75,7 +75,7 @@ You do not need to know any of this in detail to use the GraphExplorer — if yo
 - **Save as JSON** — save a graph loaded from RDF as graph JSON, which opens much faster next time
 
 **Connecting**
-- **QGIS and Blender** — separate plugins connect to a running GraphExplorer and share the selection both ways
+- **Other applications** — separate GraphExplorer Links connect applications such as QGIS, Blender or CloudCompare to a running GraphExplorer and share the selection both ways
 
 </details>
 
@@ -187,7 +187,7 @@ After loading a file, the GraphExplorer shows a header, a row of tabs — one pe
 | ③ | [Save as JSON](#save-as-json) | Saves the graph as you currently see it as a graph JSON file |
 | ④ | Load new file | Goes back to the start page to load another graph |
 | ⑤ | View | The active view |
-| ⑥ | [Connect QGIS / Blender](#connect-qgis-and-blender) | Connects the GraphExplorer to QGIS or Blender |
+| ⑥ | [Connect application](#connect-other-applications) | Connects the GraphExplorer to other applications such as QGIS, Blender or CloudCompare |
 
 <p>
     <img src="docs/images/overview_interface.png" alt="Interface Overview" width="1200">
@@ -520,25 +520,25 @@ These colours are used in every view and are remembered by your browser. In the 
 
 The file is named after the graph title; if types are collapsed, `-collapsed` is added.
 
-### Connect QGIS and Blender
+### Connect other applications
 
-The GraphExplorer can be linked to **QGIS** and **Blender**: select a node here, and the corresponding feature or object is selected there — and the other way round. Both applications can be connected at the same time.
+The GraphExplorer can be linked to other applications such as **QGIS**, **Blender** or **CloudCompare**: select a node here, and the corresponding feature or object is selected there — and the other way round. Several applications can be connected at the same time.
 
-The plugins for [QGIS](https://github.com/oeai-dac/GraphExplorer_QGIS) and [Blender](https://github.com/oeai-dac/GraphExplorer_Blender) are separate projects and are installed in the respective application. They need a running GraphExplorer:
+The GraphExplorer Links for [QGIS](https://github.com/oeai-dac/GraphExplorer_QGIS), [Blender](https://github.com/oeai-dac/GraphExplorer_Blender) and [CloudCompare](https://github.com/oeai-dac/GraphExplorer_CloudCompare) are separate projects and are installed in the respective application. They need a running GraphExplorer:
 
 1. Start the GraphExplorer and load your graph.
-2. In QGIS or Blender, copy the connection address from the plugin.
-3. Click **Connect QGIS / Blender** at the bottom left of the GraphExplorer, paste the address, and click **Connect**.
+2. In the other application, copy the connection address from its GraphExplorer Link.
+3. Click **Connect application** at the bottom left of the GraphExplorer, paste the address, and click **Connect**.
 
 <p>
-    <img src="docs/images/connect.png" alt="Connect QGIS or Blender" width="500">
+    <img src="docs/images/connect.png" alt="Connect another application" width="500">
 </p>
 
 ---
 
 ## Example Data
 
-The folder `0_exampleData/` contains a small, **entirely fictional** excavation that uses every view of the GraphExplorer: *Serpent's Meadow*, a stretch of Danube floodplain, with two sites, *The Secret Place* and *The Well of Souls*. It has three sondages, 40 stratigraphic units and 203 finds, from the Late Bronze Age to modern times. The same excavation also comes as GIS layers for QGIS and as 3D bodies for Blender, so you can try the connection to both through their respective plugins.
+The folder `0_exampleData/` contains a small, **entirely fictional** excavation that uses every view of the GraphExplorer: *Serpent's Meadow*, a stretch of Danube floodplain, with two sites, *The Secret Place* and *The Well of Souls*. It has three sondages, 40 stratigraphic units and 203 finds, from the Late Bronze Age to modern times. The same excavation also comes as GIS layers for QGIS and as 3D bodies for Blender or CloudCompare, so you can try the connection to each of them through its GraphExplorer Link.
 
 1. [Start the GraphExplorer](#start).
 2. Drop `0_exampleData/GraphExplorer_Example.json` onto the start page.
@@ -549,7 +549,7 @@ The folder `0_exampleData/` contains a small, **entirely fictional** excavation 
 |---|---|
 | `GraphExplorer_Example.json` | The example graph (graph JSON, English labels with German translations) |
 | `GraphExplorer_Example.gpkg` | To connect the GraphExplorer with QGIS through the plugin **GraphExplorer Link for QGIS**: a GeoPackage containing sondages, plans of the stratigraphic units and find spots (EPSG:32633) |
-| `GraphExplorer_Example.obj` + `.mtl` | To connect the GraphExplorer with Blender through the add-on **GraphExplorer Link for Blender**: an .obj file with one 3D body per stratigraphic unit and a marker per find, named like the nodes in the graph |
+| `GraphExplorer_Example.obj` + `.mtl` | To connect the GraphExplorer with Blender or CloudCompare through **GraphExplorer Link for Blender** or **GraphExplorer Link for CloudCompare**: an .obj file with one 3D body per stratigraphic unit and a marker per find, named like the nodes in the graph |
 | `make_example.py` | The Python script that generated all of them |
 
 All sites, people, units, finds and dates are invented.

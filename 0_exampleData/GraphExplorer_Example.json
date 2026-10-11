@@ -1132,8 +1132,8 @@
     ]
    }
   },
-  "http://example.org/example-indy-style/person_h_jones": {
-   "l": "Dr. Henry Jones Jr.",
+  "http://example.org/example-indy-style/person_j_flint": {
+   "l": "Dr. Junia Flint",
    "t": "http://www.cidoc-crm.org/cidoc-crm/E21_Person",
    "a": {},
    "o": {},
@@ -1143,8 +1143,8 @@
     ]
    }
   },
-  "http://example.org/example-indy-style/person_e_schneider": {
-   "l": "Dr. Elsa Schneider",
+  "http://example.org/example-indy-style/person_r_cross": {
+   "l": "Dr. Rika Cross",
    "t": "http://www.cidoc-crm.org/cidoc-crm/E21_Person",
    "a": {},
    "o": {},
@@ -1154,8 +1154,8 @@
     ]
    }
   },
-  "http://example.org/example-indy-style/person_m_ravenwood": {
-   "l": "Marion Ravenwood",
+  "http://example.org/example-indy-style/person_m_whipley": {
+   "l": "Maxwell Whipley",
    "t": "http://www.cidoc-crm.org/cidoc-crm/E21_Person",
    "a": {},
    "o": {},
@@ -1165,8 +1165,8 @@
     ]
    }
   },
-  "http://example.org/example-indy-style/person_m_brody": {
-   "l": "Dr. Marcus Brody",
+  "http://example.org/example-indy-style/person_e_maze": {
+   "l": "Dr. Erasmus Maze",
    "t": "http://www.cidoc-crm.org/cidoc-crm/E21_Person",
    "a": {},
    "o": {},
@@ -1220,8 +1220,8 @@
    },
    "o": {
     "http://www.cidoc-crm.org/cidoc-crm/P14_carried_out_by": [
-     "http://example.org/example-indy-style/person_m_ravenwood",
-     "http://example.org/example-indy-style/person_m_brody"
+     "http://example.org/example-indy-style/person_m_whipley",
+     "http://example.org/example-indy-style/person_e_maze"
     ],
     "http://www.cidoc-crm.org/extensions/crmarchaeo/AP3_investigated": [
      "http://example.org/example-indy-style/TSP-SO1",
@@ -2427,8 +2427,8 @@
    },
    "o": {
     "http://www.cidoc-crm.org/cidoc-crm/P14_carried_out_by": [
-     "http://example.org/example-indy-style/person_h_jones",
-     "http://example.org/example-indy-style/person_e_schneider"
+     "http://example.org/example-indy-style/person_j_flint",
+     "http://example.org/example-indy-style/person_r_cross"
     ],
     "http://www.cidoc-crm.org/extensions/crmarchaeo/AP3_investigated": [
      "http://example.org/example-indy-style/WOS-SO1"
