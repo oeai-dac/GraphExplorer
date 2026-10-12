@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useStore } from './store'
 import { Landing } from './components/Landing'
 import { Header } from './components/Header'
@@ -8,12 +8,18 @@ import { ExplorerTab } from './components/explorer/ExplorerTab'
 import { GraphTab } from './components/graph/GraphTab'
 import { MatrixTab } from './components/matrix/MatrixTab'
 import { MapTab } from './components/map/MapTab'
+import { Scene3dTab } from './components/scene3d/Scene3dTab'
 import { TimelineTab } from './components/timeline/TimelineTab'
 import { ChartsTab } from './components/charts/ChartsTab'
-import { SearchTab } from './components/search/SearchTab'
 import { DashboardTab } from './components/dashboard/DashboardTab'
 import { NodeHoverCard } from './components/shared/NodeHoverCard'
 import { ViewBoundary } from './components/shared/ViewBoundary'
+
+// The Explorer's search field that is on screen, if any -- the Explorer tab's
+// own, or the one of an Explorer pane in the Dashboard.
+function visibleExplorerSearch() {
+  return [...document.querySelectorAll('input[data-explorer-search]')].find((el) => el.offsetParent !== null)
+}
 
 export default function App() {
   const graph = useStore((s) => s.graph)
@@ -22,7 +28,6 @@ export default function App() {
   const trail = useStore((s) => s.trail)
   const navigateBack = useStore((s) => s.navigateBack)
   const loadGraph = useStore((s) => s.loadGraph)
-  const searchInputRef = useRef(null)
 
   // Accept data pushed via postMessage (from a future OntoCartographer Studio "Explore" button)
   useEffect(() => {
@@ -39,7 +44,7 @@ export default function App() {
     return () => window.removeEventListener('message', handler)
   }, [loadGraph])
 
-  // Keyboard shortcuts: Escape = back, "/" or Ctrl+K = focus search
+  // Keyboard shortcuts: Escape = back, "/" or Ctrl+K = focus the Explorer's search
   useEffect(() => {
     function handler(e) {
       if (!graph) return
@@ -56,13 +61,19 @@ export default function App() {
       }
       if ((e.key === '/' || (e.ctrlKey && e.key === 'k')) && !isInput) {
         e.preventDefault()
-        setActiveTab('search')
-        setTimeout(() => searchInputRef.current?.focus(), 0)
+        // In the Dashboard, an Explorer pane on screen is used as it is;
+        // everywhere else the Explorer tab comes to the front.
+        const onScreen = activeTab === 'dashboard' && visibleExplorerSearch()
+        if (onScreen) onScreen.focus()
+        else {
+          setActiveTab('explore')
+          setTimeout(() => visibleExplorerSearch()?.focus(), 0)
+        }
       }
     }
     document.addEventListener('keydown', handler)
     return () => document.removeEventListener('keydown', handler)
-  }, [graph, trail, navigateBack, setActiveTab])
+  }, [graph, trail, navigateBack, setActiveTab, activeTab])
 
   if (!graph) return <Landing />
 
@@ -93,14 +104,14 @@ export default function App() {
         <ViewBoundary name="Map" className={panelClass('map')}>
           <MapTab active={is('map')} />
         </ViewBoundary>
+        <ViewBoundary name="3D" className={panelClass('scene3d')}>
+          <Scene3dTab active={is('scene3d')} />
+        </ViewBoundary>
         <ViewBoundary name="Timeline" className={panelClass('timeline')}>
           <TimelineTab active={is('timeline')} />
         </ViewBoundary>
         <ViewBoundary name="Charts" className={panelClass('charts')}>
           <ChartsTab active={is('charts')} />
-        </ViewBoundary>
-        <ViewBoundary name="Search" className={panelClass('search')}>
-          <SearchTab active={is('search')} searchInputRef={searchInputRef} />
         </ViewBoundary>
         <ViewBoundary name="Dashboard" className={panelClass('dashboard')}>
           <DashboardTab active={is('dashboard')} />

@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css'
 import { useStore } from '../../store'
 import { hideNodeHover, scheduleNodeHoverAt } from '../shared/nodeHover'
 import { typeColor, nodeColorOverride, typeLabel, edgeLabel, fmt, PALETTE } from '../../lib/schema'
-import { buildGeoFeatures, neighborNodeIds, resolveFeatureCategory } from '../../lib/geo'
+import { buildGeoFeatures, neighborNodeIds, resolveFeatureCategory, connectionPropsByType } from '../../lib/geo'
 import { nextTileDepth } from '../../lib/tileDepth'
 import { EpsgPrompt } from './EpsgPrompt'
 import { MapSearch } from './MapSearch'
@@ -331,33 +331,11 @@ export function MapTab({ active, domId = 'tab-map' }) {
     return [...ids]
   }, [graph, result])
 
-  // Per base-type: which node ids are in scope for that type's own
-  // categorization picker (its own geometry nodes plus their one-hop
-  // neighbors, e.g. a Fund's Material sits one hop beyond its "Einmessung
-  // Fund" geometry node), and which connection properties are available
-  // there. Scoped per type so each layer's dropdown only offers properties
-  // that are actually meaningful for ITS nodes, not a mix of every type's.
+  // Per base-type: which connection properties its categorization picker
+  // offers (see connectionPropsByType, shared with the 3D tab).
   const typeConnectionProps = useMemo(() => {
     if (!graph || !result) return new Map()
-    const idsByType = new Map()
-    for (const f of result.features) {
-      const t = graph.nodes[f.nodeId]?.t || ''
-      if (!idsByType.has(t)) idsByType.set(t, new Set())
-      idsByType.get(t).add(f.nodeId)
-      neighborNodeIds(graph, f.nodeId).forEach((n) => idsByType.get(t).add(n))
-    }
-    const propsByType = new Map()
-    for (const [t, ids] of idsByType) {
-      const keys = new Set()
-      for (const id of ids) {
-        const nd = graph.nodes[id]
-        if (!nd) continue
-        Object.keys(nd.o || {}).forEach((k) => keys.add(k))
-        Object.keys(nd.i || {}).forEach((k) => keys.add(k))
-      }
-      propsByType.set(t, [...keys].sort((a, b) => edgeLabel(schema, a).localeCompare(edgeLabel(schema, b))))
-    }
-    return propsByType
+    return connectionPropsByType(graph, result.features.map((f) => f.nodeId), (p) => edgeLabel(schema, p))
   }, [graph, result, schema])
 
   if (!graph) return null

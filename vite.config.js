@@ -9,11 +9,14 @@ function exampleData() {
   return {
     name: 'graph-explorer-example-data',
     generateBundle() {
-      this.emitFile({
-        type: 'asset',
-        fileName: 'example/GraphExplorer_Example.json',
-        source: readFileSync(new URL('./0_exampleData/GraphExplorer_Example.json', import.meta.url)),
-      })
+      // JSON for the landing page, OBJ + MTL for the 3D tab.
+      for (const ext of ['json', 'obj', 'mtl']) {
+        this.emitFile({
+          type: 'asset',
+          fileName: `example/GraphExplorer_Example.${ext}`,
+          source: readFileSync(new URL(`./0_exampleData/GraphExplorer_Example.${ext}`, import.meta.url)),
+        })
+      }
     },
   }
 }

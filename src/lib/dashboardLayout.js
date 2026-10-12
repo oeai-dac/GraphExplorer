@@ -132,6 +132,12 @@ export function closePane(tree, paneId) {
 //
 // Every node gets a fresh id on the way through, so a restored layout can
 // never collide with ids handed out earlier in this session.
+// Views that no longer exist, and the view that took over their job. A pane
+// saved on one of them is moved there instead of being reported as "not
+// available" -- the Search tab went in 1.3.0, and the Explorer's search
+// field compares exactly what it compared.
+const RETIRED_VIEWS = { search: 'explore' }
+
 export function sanitizeLayout(raw, allowedViews) {
   const viewOk = (v) => typeof v === 'string' && (!allowedViews || allowedViews.includes(v))
   // Nesting past MAX_DEPTH means the value isn't something this app wrote.
@@ -145,7 +151,10 @@ export function sanitizeLayout(raw, allowedViews) {
       tooDeep = true
       return null
     }
-    if (n.type === 'pane') return viewOk(n.view) ? pane(n.view) : null
+    if (n.type === 'pane') {
+      const view = RETIRED_VIEWS[n.view] || n.view
+      return viewOk(view) ? pane(view) : null
+    }
     if (n.type === 'split') {
       const a = walk(n.a, depth + 1)
       const b = walk(n.b, depth + 1)

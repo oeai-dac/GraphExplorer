@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.2.1-blue" alt="Version 1.2.1">
+  <img src="https://img.shields.io/badge/version-1.3.0-blue" alt="Version 1.3.0">
   <img src="https://img.shields.io/badge/React-18-61dafb?logo=react&logoColor=white" alt="React 18">
   <img src="https://img.shields.io/badge/Vite-5-646cff?logo=vite&logoColor=white" alt="Vite 5">
   <img src="https://img.shields.io/badge/Node.js-18+-5fa04e?logo=nodedotjs&logoColor=white" alt="Node.js 18+">
@@ -27,7 +27,7 @@ flowchart LR
     S["OntoCartographer Studio<br/>Explore button"] --> J["Graph JSON"]
     R["Any RDF file<br/>TTL · TriG · NT · NQ · N3"] --> G
     J --> G["GraphExplorer"]
-    G --> V["Overview · Explorer · Graph<br/>Harris Matrix · Map · Timeline<br/>Charts · Search · Dashboard"]
+    G --> V["Overview · Explorer · Graph<br/>Harris Matrix · Map · 3D<br/>Timeline · Charts · Dashboard"]
     G <-. "live selection" .-> P["Other applications<br/>e.g. QGIS · Blender · CloudCompare<br/>(separate GraphExplorer Links)"]
 ```
 
@@ -44,7 +44,7 @@ You do not need to know any of this in detail to use the GraphExplorer — if yo
 ### Why the GraphExplorer?
 
 - **No query language** — no SPARQL, no database; you click, filter and choose from lists
-- **Nine views of the same data** — lists, network, Harris matrix, map, charts, timeline, search, and a dashboard that combines them
+- **Nine views of the same data** — lists, network, Harris matrix, map, 3D, charts, timeline, and a dashboard that combines them
 - **Everything linked** — select a node in one view and every other view follows
 - **Made for archaeology** — Harris matrix from stratigraphic relations, maps from geometries, timelines from dates
 - **Works with any graph** — reads OntoCartographer Studio exports and plain RDF; views that need data you do not have simply stay hidden
@@ -65,6 +65,7 @@ You do not need to know any of this in detail to use the GraphExplorer — if yo
 - **Overview** — node and connection types with counts, a schema of how the types relate, and the most connected nodes
 - **Harris matrix** — the stratigraphic sequence, drawn from Dot-One relations (RDF-star) such as *above*, *below*, *contemporary with*, *equals*
 - **Map** — every geometry (WKT) on a map, in any coordinate system, with several backgrounds or your own tiles
+- **3D** — geometries with heights and 3D bodies from an OBJ file, linked to their nodes by name; colour by category and hide single objects
 - **Charts** — bar charts and pivot tables: how many nodes have which value?
 - **Timeline** — every date found in the graph, with one row per value of your choice (e.g. one row per stratigraphic unit)
 - **Dashboard** — several views side by side in panes you can split and resize
@@ -114,7 +115,7 @@ On the first start, all required components are downloaded; this takes a few min
 For colleagues who only want to try it, one command packs the whole GraphExplorer into a **single HTML file**:
 
 ```bash
-npm run build:standalone     # creates GraphExplorer-standalone.html (~0.9 MB)
+npm run build:standalone     # creates GraphExplorer-standalone.html (~1.4 MB)
 ```
 
 Send the file (zipped — many mail servers block `.html` attachments); the recipient double-clicks it and drops in a graph. No Node.js, no installation, no server.
@@ -165,9 +166,9 @@ Want to try it right away? Load the [example data](#example-data).
 4. **Graph** — pick a start node and expand its neighbours click by click.
 5. **Matrix** — Harris matrix from Dot-One relations (*above*, *below*, *contemporary with*, *equals*), coloured by any property.
 6. **Map** — WKT geometries in any EPSG system; categorise layers by a property; own tiles possible.
-7. **Timeline** — every date found in the graph; one row per value of a property; colour and filter by values; year range.
-8. **Charts** — bar chart or pivot table over any property; click a bar to filter the Explorer.
-9. **Search** — full text across IDs, labels and attribute values (`/` or `Ctrl+K`).
+7. **3D** — geometries with heights and OBJ bodies, linked to the nodes by name; categorise layers, hide single objects (`H`, `Shift+H`, `Alt+H`).
+8. **Timeline** — every date found in the graph; one row per value of a property; colour and filter by values; year range.
+9. **Charts** — bar chart or pivot table over any property; click a bar to filter the Explorer.
 10. **Dashboard** — several views side by side; selection and filters are shared.
 
 Matrix, Map and Timeline only appear when the graph contains the data they need.
@@ -183,7 +184,7 @@ After loading a file, the GraphExplorer shows a header, a row of tabs — one pe
 | | Element | Details |
 |---|---|---|
 | ① | Title | The title of the loaded graph, with its number of nodes and connections |
-| ② | Tabs | One tab per view. [Matrix](#4-harris-matrix), [Map](#5-map) and [Timeline](#6-timeline) only appear when the graph contains the data they need |
+| ② | Tabs | One tab per view. [Matrix](#4-harris-matrix), [Map](#5-map) and [Timeline](#7-timeline) only appear when the graph contains the data they need |
 | ③ | [Save as JSON](#save-as-json) | Saves the graph as you currently see it as a graph JSON file |
 | ④ | Load new file | Goes back to the start page to load another graph |
 | ⑤ | View | The active view |
@@ -193,7 +194,7 @@ After loading a file, the GraphExplorer shows a header, a row of tabs — one pe
     <img src="docs/images/overview_interface.png" alt="Interface Overview" width="1200">
 </p>
 
-**Keyboard:** `Escape` goes back to the previous node in the Explorer · `/` or `Ctrl+K` jumps to the search.
+**Keyboard:** `Escape` goes back to the previous node in the Explorer · `/` or `Ctrl+K` jumps to the search field of the Explorer.
 
 ### 0. Load Your Data
 
@@ -240,7 +241,7 @@ The **Overview** is the first thing you see: what is in the graph, and how it bl
 
 #### Collapse Pass-Through Nodes
 
-Data modelled with CIDOC CRM often places a node *between* two things that belong together. In the example, a find is not dated directly: it *was produced by* a **Production**, and the production carries the dates. That is correct modelling, but it means the find itself has no date — the [Timeline](#6-timeline) cannot place it, and in the [Explorer](#2-explorer) the date is one click away.
+Data modelled with CIDOC CRM often places a node *between* two things that belong together. In the example, a find is not dated directly: it *was produced by* a **Production**, and the production carries the dates. That is correct modelling, but it means the find itself has no date — the [Timeline](#7-timeline) cannot place it, and in the [Explorer](#2-explorer) the date is one click away.
 
 Click **⤺** next to a node type to collapse it: its nodes disappear, their neighbours are connected directly, and **their attributes move to the neighbours**. After collapsing *Production*, every find carries its dates itself — and appears on the timeline.
 
@@ -266,7 +267,7 @@ The **Explorer** shows all information belonging to one node — its attributes 
 
 | | Element | Details |
 |---|---|---|
-| ① | Search field | Filters the list by ID, name and attribute values (from 2 characters) |
+| ① | Search field | Filters the list by ID, name and attribute values (from 2 characters). `/` or `Ctrl+K` jumps here from anywhere |
 | ② | Advanced filters | Opens the [filters](#advanced-filters) |
 | ③ | Node list | All nodes that match, 50 per page. Click one to open it |
 | ④ | Type | Shows only the nodes of one type |
@@ -302,7 +303,7 @@ Choose the kind and the property, enter the value and click **+ Add**. All condi
     <img src="docs/images/advanced_filters.png" alt="Advanced Filters" width="1200">
 </p>
 
-> **Tip:** The filters also apply to the [Charts](#7-charts) — filter in the Explorer, then count in the charts.
+> **Tip:** The filters also apply to the [Charts](#8-charts) — filter in the Explorer, then count in the charts.
 
 #### Quick Info
 
@@ -414,7 +415,38 @@ Then choose **Own tiles** as background. This works fully offline. The map detec
 
 </details>
 
-### 6. Timeline
+### 6. 3D
+
+The **3D** view shows your data in three dimensions: geometries of the graph that carry heights, and 3D bodies from an OBJ file, e.g. stratigraphic units exported from Blender or CloudCompare.
+
+<p>
+    <img src="docs/images/3D-view.png" alt="3D" width="1200">
+</p>
+
+**Heights from the graph:** geometries with a Z value (e.g. `POINT Z (16.41 48.20 156.6)`) appear in 3D on their own. They use the same coordinate system as the map. Geometries without a height stay on the map only.
+
+**Load a model:** click **Load OBJ …** or drop the `.obj` file onto the view, together with its `.mtl` for the colours. Each object in the file stands for the node with the same label: an object called *SU1001* is the stratigraphic unit *SU1001*. The header shows how many objects found their node. Objects that found none are shown in grey.
+
+- **Layers** (top right): one layer per node type. **Categorise** splits a layer by a property, as on the map, e.g. finds by material.
+- **Objects** (top left): every object one by one. Switch single units or finds on and off, filter them by name, or keep only one (◎). This works independently of the layers, so you can colour by material and still hide one unit.
+- **Colour:** by layer, or with the colours of the `.mtl` file (**OBJ material**).
+- **Click** an object to open its node in the Explorer, and **hover** for the quick info. A node selected elsewhere is highlighted and brought into view. With **Fade the rest**, everything else turns translucent.
+- **Navigate:** drag to rotate, right-drag to pan, scroll to zoom. **Fit view** shows everything again.
+
+**Keyboard** (as in Blender): `H` hides the selected node, `Shift+H` hides everything else, `Alt+H` shows everything again.
+
+<details>
+<summary><b>Details: placing the model, matching names, limits</b></summary>
+
+**Placing the model:** an OBJ file has no coordinate system, so the GraphExplorer needs to know where its zero point lies. Where the file names it in its header (as the example data does), it is filled in automatically. Otherwise, enter it under **OBJ origin**: easting (**E**), northing (**N**) and a height offset (**H**) in the coordinate system shown next to it. Coordinates in degrees (EPSG:4326) are converted to the matching UTM zone for 3D. **Up axis** is *Y* for files exported from Blender and *Z* for CloudCompare and most survey data.
+
+**Matching names:** upper/lower case and spaces do not matter, and Blender's suffix for copies (`SU1001.001`) is ignored. If several nodes share a label, the first one is used, and the header says how often that happened.
+
+**Limits:** textures are not shown, only colours. The model is not remembered: after reloading the page, load it again.
+
+</details>
+
+### 7. Timeline
 
 The **Timeline** places every date it finds in the graph on a time axis. The tab appears only when the graph contains dates.
 
@@ -446,7 +478,7 @@ Exact dates (a day, a month, a year) appear as points; spans (a decade, a centur
 
 </details>
 
-### 7. Charts
+### 8. Charts
 
 The **Charts** answer one question: *how many nodes have which value?*
 
@@ -474,18 +506,6 @@ The pivot table above crosses object type and stratigraphic unit: SU3002 holds t
 The bar chart shows up to 30 bars, the pivot table up to 20 rows and 12 columns — always the most frequent; the rest is counted below. **(no value)** collects the nodes without a value; it cannot be clicked. A property with a value of its own for almost every node (an inventory number, a geometry) gives no useful chart — the GraphExplorer says so when you choose it.
 
 </details>
-
-### 8. Search
-
-The **Search** looks for a word in all IDs, names and attribute values. Type at least two characters; the results are grouped by type. Narrow it to one type with the menu on the right.
-
-<p>
-    <img src="docs/images/search.png" alt="Search" width="1200">
-</p>
-
-Click a result to open it in the Explorer. From anywhere in the GraphExplorer, `/` or `Ctrl+K` jumps straight to the search field.
-
-> The search field in the Explorer filters the list; this tab searches across everything and shows up to 300 results.
 
 ### 9. Dashboard
 
@@ -549,7 +569,7 @@ The folder `0_exampleData/` contains a small, **entirely fictional** excavation 
 |---|---|
 | `GraphExplorer_Example.json` | The example graph (graph JSON, English labels with German translations) |
 | `GraphExplorer_Example.gpkg` | To connect the GraphExplorer with QGIS through the plugin **GraphExplorer Link for QGIS**: a GeoPackage containing sondages, plans of the stratigraphic units and find spots (EPSG:32633) |
-| `GraphExplorer_Example.obj` + `.mtl` | To connect the GraphExplorer with Blender or CloudCompare through **GraphExplorer Link for Blender** or **GraphExplorer Link for CloudCompare**: an .obj file with one 3D body per stratigraphic unit and a marker per find, named like the nodes in the graph |
+| `GraphExplorer_Example.obj` + `.mtl` | To connect the GraphExplorer with Blender or CloudCompare through **GraphExplorer Link for Blender** or **GraphExplorer Link for CloudCompare**: an .obj file with one 3D body per stratigraphic unit and a marker per find, named like the nodes in the graph. It also opens directly in the 3D view: Load OBJ …, choose both files. |
 | `make_example.py` | The Python script that generated all of them |
 
 All sites, people, units, finds and dates are invented.
@@ -606,6 +626,12 @@ OpenStreetMap does not deliver to a file opened by double-click ([standalone fil
 
 **My colours or dashboard layout are gone**
 They are stored in your browser. A different browser, a private window or clearing the site data starts afresh.
+
+**The OBJ objects are grey / "0 of … objects linked"**
+The object names in the OBJ do not match the node labels. Each object must be called exactly like its node (upper/lower case and spaces do not matter).
+
+**The 3D model is not where the geometries are**
+Check OBJ origin and Up axis above the view: the origin must be in the coordinate system shown next to it, and files from Blender need Y, from CloudCompare usually Z.
 
 ---
 

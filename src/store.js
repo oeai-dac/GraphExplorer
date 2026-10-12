@@ -99,6 +99,13 @@ export const useStore = create((set, get) => ({
   // it can't be inferred from the WKT text itself.
   geoEpsg: DEFAULT_GEO_EPSG,
 
+  // 3D tab: the OBJ loaded next to the graph, already parsed --
+  // { fileName, group (a three.js Group), placement: { e, n, h, up } }.
+  // Lives here rather than in the tab so the tab and any Dashboard pane
+  // showing the 3D view share one model (each draws its own clone). It
+  // belongs to the dataset, so loading another graph drops it.
+  model3d: null,
+
   loadGraph(data) {
     if (!data || !data.nodes) {
       set({ loadError: 'No nodes found (expected { nodes: {...}, ... })' })
@@ -118,6 +125,7 @@ export const useStore = create((set, get) => ({
       trail: [],
       selectedId: null,
       geoEpsg: DEFAULT_GEO_EPSG,
+      model3d: null,
     })
   },
 
@@ -149,12 +157,20 @@ export const useStore = create((set, get) => ({
     set({ geoEpsg: epsg })
   },
 
+  setModel3d(model) {
+    set({ model3d: model })
+  },
+  setModel3dPlacement(patch) {
+    const m = get().model3d
+    if (m) set({ model3d: { ...m, placement: { ...m.placement, ...patch } } })
+  },
+
   reset() {
     set({
       graph: null, baseGraph: null, collapsedTypes: [], baseSchema: null, schema: null,
       nodeIds: [], typeIndex: {}, loadError: '',
       activeTab: 'overview', explorerQuery: '', explorerType: '', explorerConditions: [], explorerPage: 0,
-      trail: [], selectedId: null, geoEpsg: DEFAULT_GEO_EPSG,
+      trail: [], selectedId: null, geoEpsg: DEFAULT_GEO_EPSG, model3d: null,
     })
   },
 

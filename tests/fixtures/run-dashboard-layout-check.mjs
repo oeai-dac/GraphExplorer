@@ -110,13 +110,19 @@ check('frische IDs, keine Kollision mit laufender Sitzung',
 const withoutMap = D.sanitizeLayout(JSON.parse(JSON.stringify(l2)), ['explore', 'matrix', 'overview'])
 check('nicht verfuegbare Ansicht faellt weg, Rest bleibt', D.countPanes(withoutMap) === 2, render(withoutMap))
 check('ungueltiges Verhaeltnis beim Laden begradigt',
-  D.sanitizeLayout({ type: 'split', dir: 'row', ratio: 99, a: { type: 'pane', view: 'explore' }, b: { type: 'pane', view: 'search' } }, VIEW_KEYS).ratio === D.MAX_RATIO)
+  D.sanitizeLayout({ type: 'split', dir: 'row', ratio: 99, a: { type: 'pane', view: 'explore' }, b: { type: 'pane', view: 'charts' } }, VIEW_KEYS).ratio === D.MAX_RATIO)
 
 function deepNest(depth) {
   let n = { type: 'pane', view: 'explore' }
-  for (let i = 0; i < depth; i++) n = { type: 'split', dir: 'row', ratio: 0.5, a: n, b: { type: 'pane', view: 'search' } }
+  for (let i = 0; i < depth; i++) n = { type: 'split', dir: 'row', ratio: 0.5, a: n, b: { type: 'pane', view: 'charts' } }
   return n
 }
+
+// The Search tab went in 1.3.0; a pane saved on it lands on the Explorer,
+// whose search field does the same job, instead of a dead "not available".
+const retired = D.sanitizeLayout({ type: 'split', dir: 'row', ratio: 0.5, a: { type: 'pane', view: 'map' }, b: { type: 'pane', view: 'search' } }, VIEW_KEYS)
+check('gespeichertes Search-Pane wird zum Explorer', D.listPanes(retired).map((p) => p.view).join(',') === 'map,explore', render(retired))
+check('Search ist keine Ansicht mehr', !VIEW_KEYS.includes('search'))
 
 // ── presets ─────────────────────────────────────────────────────────────────
 H('Voreinstellungen')
@@ -126,7 +132,7 @@ for (const p of D.PRESETS) {
 }
 // On a graph with neither geometries nor stratigraphy, a preset must not
 // leave the user staring at panes it can't fill.
-const poor = ['overview', 'explore', 'charts', 'search']
+const poor = ['overview', 'explore', 'charts']
 const fallback = D.buildPreset('triple', poor)
 check('Voreinstellung weicht auf verfuegbare Ansichten aus',
   D.listPanes(fallback).every((p) => poor.includes(p.view)), render(fallback))
@@ -139,7 +145,7 @@ check('Karte ohne WKT nicht verfuegbar', !isViewAvailable(plain, 'map'))
 check('Matrix ohne Dot-One nicht verfuegbar', !isViewAvailable(plain, 'matrix'))
 check('unbekannter Schluessel nie verfuegbar', !isViewAvailable(plain, 'dashboard'))
 check('ohne Graph nur die datenfreien Ansichten',
-  availableViewKeys(null).join(',') === 'overview,explore,graph,charts,search', availableViewKeys(null).join(','))
+  availableViewKeys(null).join(',') === 'overview,explore,graph,scene3d,charts', availableViewKeys(null).join(','))
 
 const geo = { nodes: { a: { l: 'A', t: 'T', a: { geom: 'POINT(16.37 48.21)' }, o: {}, i: {} } } }
 check('Karte mit WKT verfuegbar', isViewAvailable(geo, 'map'))

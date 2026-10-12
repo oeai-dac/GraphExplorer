@@ -1,7 +1,7 @@
 {
   "name": "graph-explorer",
   "private": true,
-  "version": "1.2.0",
+  "version": "1.3.0",
   "type": "module",
   "description": "Browser-based exploration of knowledge graphs - runs entirely client-side, no backend.",
   "license": "GPL-3.0-or-later",
@@ -11,7 +11,7 @@
     "build:pages": "vite build --mode pages",
     "build:standalone": "node scripts/build-standalone.mjs",
     "preview": "vite preview",
-    "check": "node tests/fixtures/run-bridge-checks.mjs && node --max-old-space-size=4096 tests/fixtures/run-lib-checks.mjs && node --max-old-space-size=4096 tests/fixtures/run-rdf-import-check.mjs && node --max-old-space-size=4096 tests/fixtures/run-collapse-check.mjs && node tests/fixtures/run-dashboard-layout-check.mjs && node --max-old-space-size=4096 tests/fixtures/run-node-preview-check.mjs && node --max-old-space-size=4096 tests/fixtures/run-chart-data-check.mjs && node tests/fixtures/run-tile-depth-check.mjs && node --max-old-space-size=4096 tests/fixtures/run-graph-explore-check.mjs"
+    "check": "node tests/fixtures/run-bridge-checks.mjs && node --max-old-space-size=4096 tests/fixtures/run-lib-checks.mjs && node --max-old-space-size=4096 tests/fixtures/run-rdf-import-check.mjs && node --max-old-space-size=4096 tests/fixtures/run-collapse-check.mjs && node tests/fixtures/run-dashboard-layout-check.mjs && node --max-old-space-size=4096 tests/fixtures/run-node-preview-check.mjs && node --max-old-space-size=4096 tests/fixtures/run-chart-data-check.mjs && node tests/fixtures/run-tile-depth-check.mjs && node tests/fixtures/run-scene3d-check.mjs && node --max-old-space-size=4096 tests/fixtures/run-graph-explore-check.mjs"
   },
   "dependencies": {
     "dagre": "^0.8.5",
@@ -22,6 +22,7 @@
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",
     "reactflow": "^11.11.4",
+    "three": "^0.169.0",
     "zustand": "^4.5.4"
   },
   "devDependencies": {

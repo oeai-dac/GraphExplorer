@@ -179,6 +179,36 @@ export function resolveFeatureCategory(graph, nodeId, propKey) {
   return null
 }
 
+/**
+ * For each node type among `nodeIds`: the connection properties its nodes
+ * (and their one-hop neighbours) carry, sorted by display label -- what the
+ * "Categorise" picker of a layer offers. Scoped per type so each layer's
+ * dropdown only lists properties that mean something for ITS nodes, e.g. a
+ * Fund's Material sits one hop beyond its "Einmessung Fund" geometry node.
+ * Returns Map(typeKey -> propKey[]).
+ */
+export function connectionPropsByType(graph, nodeIds, labelOf) {
+  const idsByType = new Map()
+  for (const id of nodeIds) {
+    const t = graph.nodes[id]?.t || ''
+    if (!idsByType.has(t)) idsByType.set(t, new Set())
+    idsByType.get(t).add(id)
+    neighborNodeIds(graph, id).forEach((n) => idsByType.get(t).add(n))
+  }
+  const propsByType = new Map()
+  for (const [t, ids] of idsByType) {
+    const keys = new Set()
+    for (const id of ids) {
+      const nd = graph.nodes[id]
+      if (!nd) continue
+      Object.keys(nd.o || {}).forEach((k) => keys.add(k))
+      Object.keys(nd.i || {}).forEach((k) => keys.add(k))
+    }
+    propsByType.set(t, [...keys].sort((a, b) => labelOf(a).localeCompare(labelOf(b))))
+  }
+  return propsByType
+}
+
 export function hasGeoData(graph) {
   if (!graph) return false
   for (const nd of Object.values(graph.nodes || {})) {

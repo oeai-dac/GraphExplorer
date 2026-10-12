@@ -10,9 +10,9 @@ import { ExplorerTab } from '../explorer/ExplorerTab'
 import { GraphTab } from '../graph/GraphTab'
 import { MatrixTab } from '../matrix/MatrixTab'
 import { MapTab } from '../map/MapTab'
+import { Scene3dTab } from '../scene3d/Scene3dTab'
 import { TimelineTab } from '../timeline/TimelineTab'
 import { ChartsTab } from '../charts/ChartsTab'
-import { SearchTab } from '../search/SearchTab'
 
 export const VIEW_COMPONENTS = {
   overview: OverviewTab,
@@ -20,7 +20,7 @@ export const VIEW_COMPONENTS = {
   graph: GraphTab,
   matrix: MatrixTab,
   map: MapTab,
+  scene3d: Scene3dTab,
   timeline: TimelineTab,
   charts: ChartsTab,
-  search: SearchTab,
 }

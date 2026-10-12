@@ -16,15 +16,16 @@ export const VIEWS = [
   { key: 'graph', icon: '⁂', tabLabel: 'Graph', label: 'Graph' },
   { key: 'matrix', icon: '⬍', tabLabel: 'Matrix', label: 'Harris Matrix' },
   { key: 'map', icon: '⚑', tabLabel: 'Map', label: 'Map' },
+  { key: 'scene3d', icon: '⬢', tabLabel: '3D', label: '3D' },
   { key: 'timeline', icon: '⧗', tabLabel: 'Timeline', label: 'Timeline' },
   { key: 'charts', icon: '▤', tabLabel: 'Charts', label: 'Charts' },
-  { key: 'search', icon: '⌕', tabLabel: 'Search', label: 'Search' },
 ]
 
 export const VIEW_KEYS = VIEWS.map((v) => v.key)
 
 // Views that only make sense for graphs carrying the right kind of data.
-// Everything not listed here is always available.
+// Everything not listed here is always available -- 3D included: its main
+// source is an OBJ loaded in the tab itself, which the graph can't announce.
 const REQUIRES = {
   matrix: hasDotOneData,
   map: hasGeoData,

@@ -195,7 +195,6 @@ dl.dl dd { color: var(--tx); font-family: 'IBM Plex Mono', monospace; font-size:
 .bcnt { color: var(--tx3); font-family: 'IBM Plex Mono', monospace; font-size: .68rem; text-align: right; }
 
 /* -- Search -- */
-.sr-group { padding: .45rem .8rem; background: var(--bg3); border-bottom: 1px solid var(--bd); font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--tx3); display: flex; align-items: center; gap: .4rem; position: sticky; top: 0; z-index: 1; }
 
 /* -- Misc -- */
 .pag { display: flex; align-items: center; justify-content: center; gap: .7rem; padding: .65rem; border-top: 1px solid var(--bd); font-size: .78rem; color: var(--tx2); flex-shrink: 0; }

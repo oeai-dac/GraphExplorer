@@ -73,6 +73,7 @@ export function ExplorerTab({ active, domId = 'tab-explore' }) {
       <div className="frow">
         <input
           className="si"
+          data-explorer-search
           placeholder="⚑ Search ID, label, attribute…"
           value={query}
           onChange={(e) => setExplorerQuery(e.target.value)}
